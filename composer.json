@@ -1,6 +1,6 @@
 {
     "name": "qdpops/breeze",
-    "description": "Breeze: a light, modern skin for Roundcube 1.6 (date groups, attachment chips, floating compose, phone layout)",
+    "description": "Breeze: a light, modern skin for Roundcube 1.6 and 1.7 (date groups, attachment chips, floating compose, phone layout)",
     "type": "roundcube-skin",
     "license": "GPL-3.0-or-later",
     "keywords": ["roundcube", "skin", "theme", "webmail"],

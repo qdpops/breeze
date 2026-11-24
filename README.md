@@ -14,4 +14,4 @@ $config['plugins'][] = 'tw_folders';
 $config['prettydate'] = false;
 ```
 
-Roundcube 1.6, GPL-3.0-or-later.
+Roundcube 1.6 and 1.7, GPL-3.0-or-later.

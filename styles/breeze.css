@@ -2450,3 +2450,6 @@ body.task-addressbook #layout-list table.listing td.selection { overflow: visibl
 
 /* contact card: no delete in read-only books ("Из писем"); the button is disabled there, hide it instead of dimming */
 #addressbooktoolbar .ti-trash.disabled { display: none; }
+
+/* Roundcube 1.7: Elastic's hover menu on message rows (size, flag, delete). Breeze rows have their own actions, and the menu ignores date-group headers when positioning */
+.listing-hover-menu { display: none !important; }

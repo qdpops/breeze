@@ -1,8 +1,14 @@
 {
 	"name": "Breeze",
+	"author": "qdpops",
+	"url": "https://github.com/qdpops/roundcube-skin-breeze",
+	"license": "GPL-3.0-or-later",
+	"license-url": "https://www.gnu.org/licenses/gpl-3.0.html",
 	"extends": "elastic",
 	"config": {
-		"supported_layouts": ["widescreen"],
+		"supported_layouts": [
+			"widescreen"
+		],
 		"jquery_ui_colors_theme": "bootstrap",
 		"embed_css_location": "/styles/embed.min.css",
 		"editor_css_location": "/styles/embed.min.css",
