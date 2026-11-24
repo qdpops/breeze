@@ -2447,3 +2447,6 @@ html.layout-small .tw-contacts-list > li .tw-contact-add, html.layout-phone .tw-
 /* contacts table: the row checkbox sat flush against a clipping cell edge */
 body.task-addressbook #layout-list table.listing td.selection { overflow: visible; justify-content: center; }
 .tw-ab-check { justify-content: center; }
+
+/* contact card: no delete in read-only books ("Из писем"); the button is disabled there, hide it instead of dimming */
+#addressbooktoolbar .ti-trash.disabled { display: none; }
