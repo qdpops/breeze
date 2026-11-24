@@ -1,0 +1,78 @@
+<roundcube:add_label name="viewsource" />
+<!-- message toolbar (above an opened message). Own classes only: Elastic styles/ui.js leave it alone -->
+<div id="mailtoolbar" class="tw-bar" role="toolbar">
+	<a class="tw-btn tw-icon-only ti ti-arrow-left tw-back" href="#back" title="<roundcube:label name="back" />"><span class="inner"><roundcube:label name="back" /></span></a>
+	<roundcube:button command="plugin.archive" type="link" class="tw-btn ti ti-archive disabled" classAct="tw-btn ti ti-archive"
+		label="archive.buttontext" title="archive.buttontitle" innerclass="inner" />
+	<roundcube:button command="plugin.markasjunk.junk" type="link" class="tw-btn ti ti-ban disabled" classAct="tw-btn ti ti-ban"
+		label="markasjunk.asjunk" title="markasjunk.markasjunk" innerclass="inner" />
+	<roundcube:button command="delete" type="link" class="tw-btn ti ti-trash disabled" classAct="tw-btn ti ti-trash"
+		label="delete" title="deletemessage" innerclass="inner" />
+	<span class="tw-sep"></span>
+	<roundcube:button command="mark" prop="unread" type="link" class="tw-btn tw-icon-only ti ti-mail disabled" classAct="tw-btn tw-icon-only ti ti-mail"
+		label="markunread" title="markunread" innerclass="inner" />
+	<roundcube:button command="mark" prop="flagged" type="link" class="tw-btn tw-icon-only ti ti-bookmark disabled" classAct="tw-btn tw-icon-only ti ti-bookmark"
+		label="markflagged" title="markflagged" innerclass="inner" />
+	<roundcube:button name="markmenulink" id="markmessagemenulink" type="link" class="tw-btn tw-icon-only ti ti-tag"
+		label="mark" title="markmessages" data-popup="markmessage-menu" innerclass="inner" />
+	<roundcube:button command="move" type="link" class="tw-btn tw-icon-only ti ti-folder disabled" classAct="tw-btn tw-icon-only ti ti-folder"
+		label="moveto" title="moveto" innerclass="inner folder-selector-link" />
+	<roundcube:button name="messagemenulink" id="messagemenulink" type="link" class="tw-btn tw-icon-only ti ti-more"
+		label="more" title="moreactions" data-popup="message-menu" innerclass="inner" />
+	<span class="tw-spacer"></span>
+	<a class="tw-btn tw-nav-prev ti ti-chevron-left" href="#prev" title="<roundcube:label name="previousmessage" />"><span class="inner"><roundcube:label name="previous" /></span></a>
+	<a class="tw-btn tw-nav-next tw-icon-after ti ti-chevron-right" href="#next" title="<roundcube:label name="nextmessage" />"><span class="inner"><roundcube:label name="next" /></span></a>
+</div>
+
+<div id="forward-menu" class="popupmenu">
+	<h3 id="aria-label-forward-menu" class="voice"><roundcube:label name="arialabelforwardingoptions" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-forward-menu">
+		<roundcube:button type="link-menuitem" command="forward-inline" label="forwardinline" prop="sub" class="forward inline disabled" classAct="forward inline active" />
+		<roundcube:button type="link-menuitem" command="forward-attachment" label="forwardattachment" prop="sub" class="forward attachment disabled" classAct="forward attachment active" />
+		<roundcube:button type="link-menuitem" command="bounce" label="bouncemsg" class="forward bounce disabled" classAct="forward bounce active" />
+		<roundcube:container name="forwardmenu" id="forward-menu" />
+	</ul>
+</div>
+
+<div id="replyall-menu" class="popupmenu">
+	<h3 id="aria-label-replyall-menu" class="voice"><roundcube:label name="arialabelreplyalloptions" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-replyall-menu">
+		<roundcube:button type="link-menuitem" command="reply-all" label="replyall" prop="sub" class="reply all disabled" classAct="reply all active" />
+		<roundcube:button type="link-menuitem" command="reply-list" label="replylist" prop="sub" class="reply list disabled" classAct="reply list active" />
+		<roundcube:container name="replyallmenu" id="replyall-menu" />
+	</ul>
+</div>
+
+<div id="message-menu" class="popupmenu">
+	<h3 id="aria-label-message-menu" class="voice"><roundcube:label name="arialabelmoremessageactions" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-message-menu">
+		<roundcube:button type="link-menuitem" command="reply-all" label="replyall" class="reply all disabled" classAct="reply all active" />
+		<roundcube:button type="link-menuitem" command="forward-attachment" label="forwardattachment" class="forward attachment disabled" classAct="forward attachment active" />
+		<roundcube:button type="link-menuitem" command="print" label="printmessage" class="print disabled" classAct="print active" />
+		<roundcube:if condition="template:name != 'message'" />
+			<roundcube:button type="link-menuitem" command="import-messages" label="import" class="import disabled" classAct="import active"
+				name="messageimport" onclick="UI.import_dialog()" />
+		<roundcube:endif />
+		<roundcube:button type="link-menuitem" command="download" label="export" class="download disabled" classAct="download active" />
+		<roundcube:button type="link-menuitem" command="edit" prop="new" label="editasnew" class="edit asnew disabled" classAct="edit asnew active" />
+		<roundcube:button type="link-menuitem" command="viewsource" label="viewsource" class="source disabled" classAct="source active" />
+		<roundcube:button type="link-menuitem" command="copy" label="copyto" class="copy disabled" classAct="copy active" innerclass="folder-selector-link" aria-haspopup="true" />
+		<roundcube:button type="link-menuitem" command="open" label="openinextwin" target="_blank" class="extwin disabled" classAct="extwin active" data-hidden="small" />
+		<roundcube:container name="messagemenu" id="message-menu" />
+	</ul>
+</div>
+
+<div id="markmessage-menu" class="popupmenu">
+	<h3 id="aria-label-markmessage-menu" class="voice"><roundcube:label name="arialabelmarkmessagesas" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-markmessage-menu">
+		<roundcube:button type="link-menuitem" command="mark" prop="read" label="markread" classAct="read active" class="read disabled" />
+		<roundcube:button type="link-menuitem" command="mark" prop="unread" label="markunread" classAct="unread active" class="unread disabled" />
+		<roundcube:button type="link-menuitem" command="mark" prop="flagged" label="markflagged" classAct="flag active" class="flag disabled" />
+		<roundcube:button type="link-menuitem" command="mark" prop="unflagged" label="markunflagged" classAct="unflag active" class="unflag disabled" />
+		<roundcube:container name="markmenu" id="markmessage-menu" />
+	</ul>
+</div>
+
+<roundcube:if condition="template:name != 'message'" />
+	<roundcube:object name="messageimportform" id="uploadform" class="popupmenu formcontent" buttons="no" />
+<roundcube:endif />

@@ -1,0 +1,160 @@
+<roundcube:include file="includes/layout.html" />
+<roundcube:include file="includes/menu.html" />
+<roundcube:add_label name="addgroup" />
+
+<h1 class="voice"><roundcube:label name="addressbook" /></h1>
+
+<!-- sidebar: address books with counts, labels (contact groups), saved searches -->
+<div id="layout-sidebar" class="listbox" role="navigation" aria-labelledby="directorylist-header">
+	<div class="header">
+		<a class="button icon back-list-button" href="#back"><span class="inner"><roundcube:label name="back" /></span></a>
+		<span id="directorylist-header" class="header-title"><roundcube:label name="addressbook" /></span>
+	</div>
+	<div class="tw-side">
+		<roundcube:object name="directorylist" id="directorylist" class="treelist listing tw-list tw-books" />
+		<div class="tw-q-heading tw-ab-heading">
+			<span><roundcube:label name="tw_folders.my_labels" /></span>
+			<span class="tw-ab-heading-btns">
+				<a class="tw-btn tw-icon-only ti ti-more" href="#groupoptions" data-popup="groupoptions-menu" title="<roundcube:label name="arialabelabookgroupoptions" />"><span class="inner"><roundcube:label name="actions" /></span></a>
+				<roundcube:button command="group-create" type="link" class="tw-btn tw-icon-only ti ti-plus disabled" classAct="tw-btn tw-icon-only ti ti-plus"
+					label="addgroup" title="newgroup" innerclass="inner" />
+			</span>
+		</div>
+		<ul id="tw-labels" class="tw-list tw-books"></ul>
+		<h3 class="voice"><roundcube:label name="savedsearches" /></h3>
+		<roundcube:object name="savedsearchlist" id="savedsearchlist" class="treelist listing tw-list tw-books" />
+	</div>
+</div>
+
+<!-- contacts table -->
+<div id="layout-list" class="listbox selected" aria-labelledby="aria-label-contactslist">
+	<div class="header">
+		<a class="button icon task-menu-button" href="#menu"><span class="inner"><roundcube:label name="menu" /></span></a>
+		<a class="button icon back-sidebar-button folders" href="#sidebar"><span class="inner"><roundcube:label name="groups" /></span></a>
+		<span class="tw-ab-title">
+			<roundcube:object name="addresslisttitle" label="contacts" tag="span" class="header-title" />
+			<span class="tw-ab-count" hidden></span>
+		</span>
+		<roundcube:object name="searchform" id="searchform" wrapper="searchbar tw-ab-search"
+			label="contactsearchform" buttontitle="findcontacts" options="searchmenu" ariatag="h2" />
+		<select id="tw-ab-sort" class="tw-text-input" aria-label="<roundcube:label name="tw_folders.sort" />">
+			<option value="surname"><roundcube:label name="tw_folders.sort_surname" /></option>
+			<option value="firstname"><roundcube:label name="tw_folders.by_name" /></option>
+			<option value="name"><roundcube:label name="tw_folders.sort_name" /></option>
+		</select>
+		<span class="tw-split-btn">
+			<roundcube:button command="add" type="link" class="tw-add-btn ti ti-plus disabled" classAct="tw-add-btn ti ti-plus"
+				label="tw_folders.add" title="newcontact" />
+			<a class="tw-add-more ti ti-chevron-down" href="#more" data-tw-menu="tw-ab-menu" aria-haspopup="true" title="<roundcube:label name="moreactions" />"><span class="inner"><roundcube:label name="moreactions" /></span></a>
+		</span>
+	</div>
+	<div id="searchmenu" class="hidden searchoptions scroller propform formcontainer" aria-labelledby="aria-label-search-menu">
+		<h3 id="aria-label-search-menu" class="voice"><roundcube:label name="searchmod" /></h3>
+		<div class="formcontent">
+			<ul class="proplist">
+				<li><label><input type="checkbox" name="s_mods[]" value="name" /><roundcube:label name="name" /></label></li>
+				<li><label><input type="checkbox" name="s_mods[]" value="firstname" /><roundcube:label name="firstname" /></label></li>
+				<li><label><input type="checkbox" name="s_mods[]" value="surname" /><roundcube:label name="surname" /></label></li>
+				<li><label><input type="checkbox" name="s_mods[]" value="email" /><roundcube:label name="email" /></label></li>
+				<li><label><input type="checkbox" name="s_mods[]" value="*" /><roundcube:label name="allfields" /></label></li>
+			</ul>
+		</div>
+		<div class="formbuttons">
+			<button type="button" class="btn btn-primary icon search" onclick="return rcmail.command('search')"><roundcube:label name="search" /></button>
+		</div>
+	</div>
+	<div class="tw-ab-cols" aria-hidden="true">
+		<span class="tw-ab-check"><input type="checkbox" id="tw-ab-all" tabindex="-1" /></span>
+		<span><roundcube:label name="tw_folders.full_name" /></span><span>Email</span><span><roundcube:label name="tw_folders.phone" /></span>
+	</div>
+	<div class="scroller">
+		<h2 id="aria-label-contactslist" class="voice"><roundcube:label name="contacts" /></h2>
+		<roundcube:object name="addresslist" id="contacts-table" class="listing contactlist"
+			noheader="true" role="listbox" data-list="contact_list"
+			data-label-msg="listempty" data-create-command="add" />
+	</div>
+	<div class="tw-pager" role="toolbar" aria-label="<roundcube:label name="arialabellistnav" />">
+		<roundcube:button command="previouspage" type="link" class="tw-btn tw-icon-only ti ti-chevron-left disabled" classAct="tw-btn tw-icon-only ti ti-chevron-left"
+			title="previouspage" label="previous" innerclass="inner" />
+		<span class="tw-pager-text" aria-live="polite"><roundcube:object name="recordsCountDisplay" label="fromtoshort" /></span>
+		<roundcube:button command="nextpage" type="link" class="tw-btn tw-icon-only ti ti-chevron-right disabled" classAct="tw-btn tw-icon-only ti ti-chevron-right"
+			title="nextpage" label="next" innerclass="inner" />
+	</div>
+</div>
+
+<!-- right panel: contact card / form -->
+<div id="layout-content" role="main">
+	<h2 id="aria-label-toolbar" class="voice"><roundcube:label name="arialabeltoolbar" /></h2>
+	<div class="header" role="toolbar" aria-labelledby="aria-label-toolbar">
+		<a class="button icon back-list-button" href="#back"><span class="inner"><roundcube:label name="back" /></span></a>
+		<span class="header-title"></span>
+		<div id="addressbooktoolbar" class="tw-bar">
+			<roundcube:container name="toolbar" id="addressbooktoolbar" />
+			<roundcube:button command="delete" type="link" class="tw-btn tw-icon-only ti ti-trash disabled" classAct="tw-btn tw-icon-only ti ti-trash"
+				label="delete" title="deletecontact" innerClass="inner" />
+			<roundcube:button name="contactmenulink" id="contactmenulink" type="link"
+				class="tw-btn tw-icon-only ti ti-more" label="more" title="moreactions"
+				data-popup="contact-menu" innerclass="inner" />
+			<a class="tw-round-btn ti ti-close tw-ab-close" href="#close" title="<roundcube:label name="close" />"><span class="inner"><roundcube:label name="close" /></span></a>
+		</div>
+	</div>
+	<h2 id="aria-label-contact-frame" class="voice"><roundcube:label name="contactproperties" /></h2>
+	<div class="iframe-wrapper">
+		<roundcube:object name="contentframe" id="contact-frame" src="env:blankpage" title="contactproperties"
+			aria-labelledby="aria-label-contact-frame" />
+	</div>
+</div>
+
+<!-- "Добавить ▾" menu -->
+<div id="tw-ab-menu" class="tw-menu" hidden>
+	<ul role="menu">
+		<li role="menuitem"><roundcube:button command="import" type="link" label="importcontacts" class="disabled" classAct="" /></li>
+		<li role="menuitem"><roundcube:button command="export" type="link" label="exportall" class="disabled" classAct="" /></li>
+		<li role="menuitem"><roundcube:button command="export-selected" type="link" label="exportsel" class="disabled" classAct="" /></li>
+		<li role="menuitem"><roundcube:button command="print" type="link" label="print" class="disabled" classAct="" /></li>
+		<li role="menuitem"><roundcube:button command="advanced-search" type="link" label="advsearch" class="disabled" classAct="" /></li>
+		<li role="menuitem"><roundcube:button command="delete" type="link" label="delete" class="disabled tw-danger" classAct="tw-danger" /></li>
+	</ul>
+</div>
+
+<!-- popup menus -->
+<div id="groupoptions-menu" class="popupmenu">
+	<h3 id="aria-label-groupoptions-menu" class="voice"><roundcube:label name="arialabelabookgroupoptions" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-groupoptions-menu">
+		<roundcube:button type="link-menuitem" command="group-create" title="newgroup" label="addgroup" class="create disabled" classAct="create active" />
+		<roundcube:button type="link-menuitem" command="group-rename" label="grouprename" class="group rename disabled" classAct="group rename active" />
+		<roundcube:button type="link-menuitem" command="group-delete" label="groupdelete" class="group delete disabled" classAct="group delete active" />
+		<roundcube:button type="link-menuitem" command="search-create" label="searchsave" class="search disabled" classAct="search active" />
+		<roundcube:button type="link-menuitem" command="search-delete" label="searchdelete" class="search delete disabled" classAct="search delete active" />
+		<roundcube:container name="groupoptions" id="groupoptionsmenu" />
+	</ul>
+</div>
+
+<div id="dragcontact-menu" class="popupmenu">
+	<h3 id="aria-label-dragcontact-menu" class="voice"><roundcube:label name="arialabeldropactionmenu" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-dragcontact-menu">
+		<roundcube:button type="link-menuitem" command="move" onclick="return rcmail.drag_menu_action('move')" label="move" class="disabled" classAct="active" />
+		<roundcube:button type="link-menuitem" command="copy" onclick="return rcmail.drag_menu_action('copy')" label="copy" class="disabled" classAct="active" />
+	</ul>
+</div>
+
+<div id="contact-menu" class="popupmenu">
+	<h3 id="aria-label-contact-menu" class="voice"><roundcube:label name="arialabelmorecontactactions" /></h3>
+	<ul class="menu listing" role="menu" aria-labelledby="aria-label-contact-menu">
+		<roundcube:if condition="env:qrcode" />
+		<roundcube:button type="link-menuitem" command="qrcode" label="qrcode" class="qrcode disabled" classAct="qrcode active" />
+		<roundcube:endif />
+		<roundcube:button type="link-menuitem" command="print" label="print" class="print disabled" classAct="print active" />
+		<roundcube:button type="link-menuitem" command="group-assign-selected" label="groupassign" class="assigngroup disabled" classAct="assigngroup active" innerclass="folder-selector-link"  aria-haspopup="true" />
+		<roundcube:button type="link-menuitem" command="group-remove-selected" label="groupremove" class="removegroup disabled" classAct="removegroup active" />
+		<roundcube:if condition="env:contact_move_enabled" />
+		<roundcube:button type="link-menuitem" command="move" label="moveto" class="move disabled" classAct="move active" innerclass="folder-selector-link" aria-haspopup="true" />
+		<roundcube:endif />
+		<roundcube:if condition="env:contact_copy_enabled" />
+		<roundcube:button type="link-menuitem" command="copy" label="copyto" class="copy disabled" classAct="copy active" innerclass="folder-selector-link" aria-haspopup="true" />
+		<roundcube:endif />
+		<roundcube:container name="contactmenu" id="contact-menu" />
+	</ul>
+</div>
+
+<roundcube:include file="includes/footer.html" />

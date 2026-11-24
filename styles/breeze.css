@@ -1,0 +1,2449 @@
+/* Timeweb-like skin. Elastic's styles.css is loaded first as a base for popups, dialogs and rare screens;
+   everything visible on the main screens is defined here.
+   Wide screens = html.layout-large / html.layout-normal (> 768px, set by Elastic's ui.js);
+   phones/small tablets = html.layout-small / html.layout-phone keep Elastic's panel switching. */
+
+:root {
+    --tw-bg: #f5f6f8;
+    --tw-card: #fff;
+    --tw-text: #0a1b39;
+    --tw-text-2: #676e85;
+    --tw-muted: #83899f;
+    --tw-faint: #9ca1b2;
+    --tw-line: #e8eaef;
+    --tw-input: #e6e7ec;
+    --tw-accent: #317bff;
+    --tw-accent-hover: #1f6af0;
+    --tw-accent-light: #dae7ff;
+    --tw-hover: #f5f6f8;
+    --tw-selected: #eaf1ff;
+    --tw-red: #f0445b;
+    --tw-top: 64px;
+    --tw-aside: 250px;
+    --tw-radius: 16px;
+    --tw-font: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+html, body { background: var(--tw-bg); }
+body,
+body *:not(i) { font-family: var(--tw-font); }
+body { font-size: 14px; color: var(--tw-text); -webkit-font-smoothing: antialiased; }
+a, a:hover { color: inherit; }
+.voice, .tw-icon-only .inner {
+    position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ============================================================ icons
+   One mask per icon (styles/icons.css). !important only here: Elastic gives every button a font glyph in ::before. */
+html body .ti::before {
+    content: "" !important;
+    display: inline-block !important;
+    position: static !important;
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    float: none !important;
+    background-color: currentColor !important;
+    -webkit-mask: var(--ti) center / contain no-repeat;
+    mask: var(--ti) center / contain no-repeat;
+    opacity: 1 !important;
+}
+html body .ti.tw-icon-after::before { order: 2; }
+
+/* ============================================================ buttons and bars */
+.tw-bar { display: flex; align-items: center; gap: 2px; min-width: 0; }
+.tw-spacer { flex: 1 1 auto; }
+.tw-sep { width: 1px; height: 20px; margin: 0 6px; background: var(--tw-line); flex: none; }
+.tw-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.tw-btn .inner { display: inline; }
+.tw-btn:hover { background: var(--tw-hover); }
+.tw-btn.tw-icon-only { width: 32px; padding: 0; justify-content: center; }
+.tw-btn.tw-mini { width: 18px; }
+.tw-btn.tw-mini::before { width: 14px !important; height: 14px !important; }
+.tw-btn.tw-muted { color: var(--tw-muted) !important; }
+.tw-btn.disabled { opacity: .4; pointer-events: none; }
+.tw-btn.tw-round { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--tw-line); background: #fff; }
+
+/* ============================================================ wide layout: top bar + sidebar + card */
+html.layout-large body:not(.task-login) #layout,
+html.layout-normal body:not(.task-login) #layout {
+    display: grid;
+    grid-template-columns: var(--tw-aside) minmax(0, 1fr);
+    grid-template-rows: var(--tw-top) minmax(0, 1fr);
+    height: 100%;
+    background: var(--tw-bg);
+}
+html.layout-normal { --tw-aside: 220px; }
+html.layout-large #layout > #layout-menu,
+html.layout-normal #layout > #layout-menu { grid-column: 1 / -1; grid-row: 1; }
+html.layout-large #layout > #layout-sidebar,
+html.layout-normal #layout > #layout-sidebar { grid-column: 1; grid-row: 2; }
+html.layout-large #layout > #layout-list,
+html.layout-normal #layout > #layout-list,
+html.layout-large #layout > #layout-content,
+html.layout-normal #layout > #layout-content { grid-column: 2; grid-row: 2; }
+/* 3 panes (settings, contacts): sections list + content */
+html.layout-large body.task-settings #layout,
+html.layout-large body.task-addressbook #layout { grid-template-columns: var(--tw-aside) 320px minmax(0, 1fr); }
+html.layout-normal body.task-settings #layout,
+html.layout-normal body.task-addressbook #layout { grid-template-columns: var(--tw-aside) 260px minmax(0, 1fr); }
+html.layout-large body.task-settings #layout > #layout-content,
+html.layout-large body.task-addressbook #layout > #layout-content,
+html.layout-normal body.task-settings #layout > #layout-content,
+html.layout-normal body.task-addressbook #layout > #layout-content { grid-column: 3; }
+html.layout-large body.task-settings #layout > #layout-list,
+html.layout-normal body.task-settings #layout > #layout-list,
+html.layout-large body.task-addressbook #layout > #layout-list,
+html.layout-normal body.task-addressbook #layout > #layout-list { margin-right: 0; border-radius: var(--tw-radius) 0 0 var(--tw-radius); border-right: 1px solid var(--tw-line); }
+html.layout-large body.task-settings #layout > #layout-content,
+html.layout-normal body.task-settings #layout > #layout-content,
+html.layout-large body.task-addressbook #layout > #layout-content,
+html.layout-normal body.task-addressbook #layout > #layout-content { border-radius: 0 var(--tw-radius) var(--tw-radius) 0; }
+/* pages without a list (full-page compose, folder-less screens) */
+html.layout-large body.action-compose #layout > #layout-content,
+html.layout-normal body.action-compose #layout > #layout-content,
+html.layout-large body.action-get #layout > #layout-content,
+html.layout-normal body.action-get #layout > #layout-content { grid-column: 1 / -1; margin-left: 16px; }
+
+/* Elastic hides panes per screen mode; on wide screens all three stay, the mailbox toggles list/message itself */
+html.layout-large #layout > .hidden,
+html.layout-normal #layout > .hidden { display: flex !important; }
+
+html.layout-large #layout > #layout-list,
+html.layout-normal #layout > #layout-list,
+html.layout-large #layout > #layout-content,
+html.layout-normal #layout > #layout-content {
+    display: flex;
+    flex-direction: column;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0;
+    min-height: 0;
+    margin: 0 16px 16px 0;
+    border: 0;
+    border-radius: var(--tw-radius);
+    background: var(--tw-card);
+    overflow: hidden;
+}
+/* "Не разделять": the message replaces the list */
+html.layout-large body.tw-mailbox:not(.tw-split) #layout > #layout-content,
+html.layout-normal body.tw-mailbox:not(.tw-split) #layout > #layout-content { display: none !important; }
+html.layout-large body.tw-mailbox.tw-reading:not(.tw-split) #layout > #layout-content,
+html.layout-normal body.tw-mailbox.tw-reading:not(.tw-split) #layout > #layout-content { display: flex !important; }
+html.layout-large body.tw-mailbox.tw-reading:not(.tw-split) #layout > #layout-list,
+html.layout-normal body.tw-mailbox.tw-reading:not(.tw-split) #layout > #layout-list { display: none !important; }
+
+/* "Письмо справа": list | message */
+html.layout-large body.tw-preview-right #layout,
+html.layout-normal body.tw-preview-right #layout { grid-template-columns: var(--tw-aside) var(--tw-list-w, minmax(340px, 40%)) minmax(0, 1fr); }
+html.layout-large body.tw-preview-right #layout > #layout-list,
+html.layout-normal body.tw-preview-right #layout > #layout-list { grid-column: 2; margin-right: 12px; }
+html.layout-large body.tw-preview-right #layout > #layout-content,
+html.layout-normal body.tw-preview-right #layout > #layout-content { grid-column: 3; }
+
+/* "Письмо снизу": list over message */
+html.layout-large body.tw-preview-bottom #layout,
+html.layout-normal body.tw-preview-bottom #layout { grid-template-rows: var(--tw-top) var(--tw-list-h, minmax(0, 42fr)) minmax(0, 58fr); }
+html.layout-large body.tw-preview-bottom #layout > #layout-sidebar,
+html.layout-normal body.tw-preview-bottom #layout > #layout-sidebar { grid-row: 2 / 4; }
+html.layout-large body.tw-preview-bottom #layout > #layout-list,
+html.layout-normal body.tw-preview-bottom #layout > #layout-list { grid-row: 2; margin-bottom: 12px; }
+html.layout-large body.tw-preview-bottom #layout > #layout-content,
+html.layout-normal body.tw-preview-bottom #layout > #layout-content { grid-row: 3; }
+/* in split layouts the list never goes away: no "back" arrow */
+body.tw-split #mailtoolbar .tw-back { display: none; }
+
+/* toolbars follow the width of their own pane (narrow message pane in split layouts): icons only, no labels */
+#layout-content, #layout-list { container-type: inline-size; }
+@container (max-width: 760px) {
+    #mailtoolbar .tw-btn:not(.tw-icon-only) .inner,
+    .tw-listbar .tw-btn:not(.tw-icon-only) .inner { display: none; }
+    #mailtoolbar .tw-btn:not(.tw-icon-only),
+    .tw-listbar .tw-btn:not(.tw-icon-only) { width: 32px; padding: 0; justify-content: center; }
+}
+@container (max-width: 480px) {
+    #mailtoolbar .tw-sep, #mailtoolbar .ti-tag, #mailtoolbar .ti-folder { display: none; }
+}
+
+/* draggable border (breeze.js places it in the 12px gap after the list) */
+.tw-splitter { position: fixed; z-index: 50; }
+.tw-splitter[hidden] { display: none; }
+.tw-splitter-v { width: 12px; cursor: col-resize; }
+.tw-splitter-h { height: 12px; cursor: row-resize; }
+.tw-splitter::after { content: ""; position: absolute; border-radius: 2px; background: transparent; transition: background .15s; }
+.tw-splitter-v::after { top: 12px; bottom: 12px; left: 5px; width: 2px; }
+.tw-splitter-h::after { left: 12px; right: 12px; top: 5px; height: 2px; }
+.tw-splitter:hover::after,
+.tw-splitter:focus-visible::after,
+body.tw-resizing .tw-splitter::after { background: var(--tw-accent); }
+.tw-splitter:focus-visible { outline: 0; }
+body.tw-resizing { cursor: row-resize; user-select: none; }
+body.tw-resizing.tw-resizing-v { cursor: col-resize; }
+body.tw-resizing iframe { pointer-events: none; } /* frames would swallow mousemove while dragging */
+
+/* attachment chips under a list row (breeze.js, data from the tw_folders plugin) */
+#messagelist .tw-chips {
+    order: 8;
+    flex: 0 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    box-sizing: border-box;
+    margin: -4px 0 10px;
+    /* under the subject: checkbox 16 + flag 18 + avatar 22 + sender 180 + four 12px gaps */
+    padding-left: 284px;
+}
+.tw-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 220px;
+    height: 30px;
+    padding: 0 10px 0 8px;
+    border: 1px solid var(--tw-line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--tw-text) !important;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.tw-chip:hover { border-color: #cfd5df; background: var(--tw-hover); }
+.tw-chip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-chip-size { flex: none; color: var(--tw-muted); font-weight: 400; }
+.tw-chip-more { padding: 0 10px; cursor: default; }
+.tw-chip-ico {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--tw-muted);
+    -webkit-mask: url(../images/icons/drafts.svg) center / contain no-repeat;
+    mask: url(../images/icons/drafts.svg) center / contain no-repeat;
+}
+.tw-chip-pdf { background-color: #f0445b; }
+.tw-chip-image { background-color: #f5a300; -webkit-mask-image: url(../images/icons/image.svg); mask-image: url(../images/icons/image.svg); }
+.tw-chip-archive { background-color: #8b5cf6; -webkit-mask-image: url(../images/icons/archive.svg); mask-image: url(../images/icons/archive.svg); }
+.tw-chip-doc { background-color: #317bff; }
+/* two-line rows (narrow list, "письмо справа"): chips under the subject */
+/* one-line rows with chips: the first line keeps the 44px height of the other rows */
+html.layout-large body:not(.tw-preview-right) #messagelist > tbody > tr:has(.tw-chips),
+html.layout-normal body:not(.tw-preview-right) #messagelist > tbody > tr:has(.tw-chips) { align-content: flex-start; }
+html.layout-large body:not(.tw-preview-right) #messagelist > tbody > tr:has(.tw-chips) span.subject,
+html.layout-normal body:not(.tw-preview-right) #messagelist > tbody > tr:has(.tw-chips) span.subject { height: 44px; }
+body.tw-preview-right #messagelist .tw-chips { padding-left: 92px; margin-top: 2px; }
+html.layout-small #messagelist .tw-chips,
+html.layout-phone #messagelist .tw-chips { padding-left: 34px; margin-top: 2px; }
+
+/* Elastic's phone-only header buttons and column resizers */
+html.layout-large #layout .header > a.button.task-menu-button,
+html.layout-normal #layout .header > a.button.task-menu-button,
+html.layout-large #layout .header > a.button.back-sidebar-button,
+html.layout-normal #layout .header > a.button.back-sidebar-button,
+html.layout-large #layout .header > a.button.back-list-button,
+html.layout-normal #layout .header > a.button.back-list-button,
+html.layout-large #layout .header > a.button.back-content-button,
+html.layout-normal #layout .header > a.button.back-content-button,
+html.layout-large #layout .header > a.button.toolbar-menu-button,
+html.layout-normal #layout .header > a.button.toolbar-menu-button,
+html.layout-large #layout-list > .header > .header-title,
+html.layout-normal #layout-list > .header > .header-title,
+html.layout-large body.task-mail #layout-content > .header > .header-title,
+html.layout-normal body.task-mail #layout-content > .header > .header-title,
+.column-resizer { display: none !important; }
+
+/* ============================================================ top bar (#layout-menu) */
+html.layout-large #layout-menu,
+html.layout-normal #layout-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    width: auto;
+    height: var(--tw-top);
+    padding: 0 20px;
+    background: var(--tw-bg);
+    border: 0;
+    position: static;
+}
+html.layout-large #layout-menu .popover-header,
+html.layout-normal #layout-menu .popover-header {
+    display: flex;
+    width: calc(var(--tw-aside) - 36px);
+    flex: none;
+    height: auto;
+    padding: 0;
+    background: none;
+}
+#layout-menu .popover-header #logo { display: none; }
+#layout-menu .popover-header .tw-logo { display: block !important; }
+#layout-menu .popover-header,
+#layout-menu .popover-header .tw-logo { background: none !important; }
+/* checkbox-mode toggle that ui.js injects: checkboxes are always on here */
+#layout-list > .header > a.button.selection { display: none !important; }
+.tw-logo {
+    font: 700 21px/1 var(--tw-font);
+    letter-spacing: -.5px;
+    color: var(--tw-text) !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.tw-logo span { color: var(--tw-accent); }
+html.layout-large #layout-menu .popover-header a.cancel,
+html.layout-normal #layout-menu .popover-header a.cancel { display: none; }
+
+#tw-search-slot { flex: 0 1 640px; min-width: 0; }
+#tw-search-slot .searchbar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin: 0;
+    padding: 0 6px 0 12px;
+    background: #fff;
+    border: 0;
+    border-radius: 8px;
+}
+#tw-search-slot .searchbar input {
+    height: 40px;
+    border: 0;
+    background: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tw-text);
+}
+#tw-search-slot .searchbar input::placeholder { color: var(--tw-faint); font-weight: 400; }
+
+/* search box icons: the skin's 16px masks instead of Elastic's 17.5px font glyphs */
+.searchbar form { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; }
+.searchbar form::before {
+    content: "" !important;
+    position: static !important;
+    flex: none;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 8px 0 0 !important;
+    font-size: 0 !important;
+    background-color: var(--tw-muted);
+    -webkit-mask: url(../images/icons/search.svg) center / contain no-repeat;
+    mask: url(../images/icons/search.svg) center / contain no-repeat;
+}
+.searchbar form input { padding-left: 0 !important; }
+.searchbar a.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border-radius: 6px;
+    color: var(--tw-muted);
+}
+.searchbar a.button:hover { background: var(--tw-hover); color: var(--tw-text); }
+.searchbar a.button::before {
+    content: "" !important;
+    position: static !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti) center / contain no-repeat;
+    mask: var(--ti) center / contain no-repeat;
+}
+.searchbar a.button .inner { display: none; }
+.searchbar a.unread { --ti: url(../images/icons/mail.svg); }
+.searchbar a.unread.selected { color: var(--tw-accent); }
+.searchbar a.options { --ti: url(../images/icons/chevron-down.svg); }
+.searchbar a.reset { --ti: url(../images/icons/close.svg); }
+.searchbar:has(form input:placeholder-shown) a.reset { display: none; } /* "clear" only when something is typed */
+.searchbar a.search { display: none; }
+
+html.layout-large #taskmenu,
+html.layout-normal #taskmenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    width: auto;
+    height: auto;
+    margin-left: auto;
+    padding: 0;
+    background: none;
+    position: static;
+}
+html.layout-large #taskmenu .action-buttons,
+html.layout-normal #taskmenu .action-buttons { display: none; }
+#taskmenu .special-buttons { display: flex; gap: 4px; position: static; width: auto; background: none; }
+html.layout-large #taskmenu .special-buttons,
+html.layout-normal #taskmenu .special-buttons { margin-left: 8px; padding-left: 12px; border-left: 1px solid #dcdfe6; }
+#taskmenu a.tw-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: 36px;
+    margin: 0;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-text) !important;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+#taskmenu a.tw-nav .inner { display: inline; position: static; padding: 0; height: auto; overflow: visible; font-size: 13px; }
+#taskmenu a.tw-nav.tw-icon-only { width: 36px; padding: 0; justify-content: center; }
+#taskmenu a.tw-nav.tw-icon-only .inner { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+#taskmenu a.tw-nav:hover,
+#taskmenu a.tw-nav.selected { background: #fff; }
+html.layout-large #taskmenu a.tw-nav.mail,
+html.layout-normal #taskmenu a.tw-nav.mail { display: none; } /* the logo leads to the mailbox */
+#taskmenu a:after { display: none !important; }
+
+/* ============================================================ sidebar */
+html.layout-large #layout > #layout-sidebar,
+html.layout-normal #layout > #layout-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: auto !important;
+    min-height: 0;
+    padding: 0 12px 0 14px;
+    background: var(--tw-bg);
+    border: 0;
+}
+html.layout-large #layout-sidebar > .header,
+html.layout-normal #layout-sidebar > .header { display: none; }
+.tw-side { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; overflow-y: auto; padding-bottom: 16px; }
+
+.tw-compose-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    height: 48px;
+    margin: 0 0 16px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--tw-accent-light);
+    color: var(--tw-accent) !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.tw-compose-btn:hover { background: #cbdcff; }
+
+.tw-list, .tw-list li { margin: 0; padding: 0; list-style: none; border: 0; background: none; }
+.tw-list li > a,
+.tw-list li > div > a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    text-decoration: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tw-list li > a:hover { background: rgba(255, 255, 255, .7); }
+.tw-list li.selected > a,
+.tw-list li.selected > div > a { background: #fff; }
+.tw-list li > a::before {
+    content: "";
+    flex: none;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask: var(--ti, url(../images/icons/folder.svg)) center / contain no-repeat;
+    mask: var(--ti, url(../images/icons/folder.svg)) center / contain no-repeat;
+}
+.tw-list .unreadcount {
+    margin-left: auto;
+    padding: 0;
+    background: none;
+    color: var(--tw-text);
+    font-size: 12px;
+    font-weight: 600;
+}
+.tw-list .tw-name { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* nested folders */
+.tw-folders ul { margin: 0; padding: 0 0 0 16px; list-style: none; }
+.tw-folders div.treetoggle { display: none; }
+
+#tw-accounts { margin: 0 0 12px; padding: 0 0 12px; border-bottom: 1px solid #e3e5ea; }
+#tw-accounts li > a { --ti: url(../images/icons/cloud.svg); }
+
+/* folder icons + Timeweb order (two lists share one ordering through display: contents) */
+.tw-folders-wrap { display: flex; flex-direction: column; }
+.tw-folders-wrap > ul { display: contents; }
+.tw-folders-wrap li { order: 80; }
+.tw-folders-wrap li.inbox { order: 10; } .tw-folders li.inbox > a { --ti: url(../images/icons/inbox.svg); }
+.tw-folders-wrap li.tw-q-flagged { order: 20; } .tw-q-flagged > a { --ti: url(../images/icons/bookmark-fill.svg); }
+.tw-q-flagged > a::before { color: var(--tw-red); }
+.tw-folders-wrap li.sent { order: 30; } .tw-folders li.sent > a { --ti: url(../images/icons/send.svg); }
+.tw-folders-wrap li.drafts { order: 40; } .tw-folders li.drafts > a { --ti: url(../images/icons/drafts.svg); }
+.tw-folders-wrap li.archive { order: 50; } .tw-folders li.archive > a { --ti: url(../images/icons/archive.svg); }
+.tw-folders-wrap li.junk { order: 60; } .tw-folders li.junk > a { --ti: url(../images/icons/spam.svg); }
+.tw-folders-wrap li.trash { order: 65; } .tw-folders li.trash > a { --ti: url(../images/icons/trash.svg); }
+.tw-folders-wrap li.tw-q-attachments { order: 70; } .tw-q-attachments > a { --ti: url(../images/icons/folder.svg); }
+.tw-folders-wrap li.tw-q-unseen { order: 71; } .tw-q-unseen > a { --ti: url(../images/icons/dot.svg); }
+.tw-q-unseen > a::before { color: var(--tw-accent); }
+.tw-folders-wrap li.tw-q-heading { order: 75; }
+.tw-q-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    margin-top: 16px !important;
+    padding: 0 4px 0 0 !important;
+    color: var(--tw-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+.tw-list li.tw-q-heading > a.tw-q-toggle {
+    flex: none;
+    gap: 6px;
+    height: 32px;
+    padding: 0 8px 0 12px;
+    color: var(--tw-muted) !important;
+    font-size: 13px;
+    font-weight: 500;
+    background: none;
+}
+.tw-list li.tw-q-heading > a.tw-q-toggle::before { width: 14px !important; height: 14px !important; transition: transform .15s; }
+.tw-list li.tw-q-heading > a.tw-q-toggle:hover { color: var(--tw-text) !important; background: none; }
+.tw-list li.tw-q-heading > a.tw-btn { height: 32px; width: 32px; padding: 0; justify-content: center; color: var(--tw-muted) !important; }
+.tw-list li.tw-q-heading > a.tw-btn:hover { color: var(--tw-text) !important; background: rgba(255, 255, 255, .7); }
+/* collapsed: hide only user folders, special folders stay */
+.tw-folders-wrap.tw-collapsed #mailboxlist > li:not(.inbox):not(.drafts):not(.sent):not(.junk):not(.trash):not(.archive) { display: none; }
+.tw-folders-wrap.tw-collapsed .tw-q-toggle::before { transform: rotate(-90deg); }
+
+/* ============================================================ list header bar */
+#layout-list > .header,
+#layout-content > .header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 56px;
+    padding: 0 12px;
+    background: transparent;
+    border: 0;
+    color: var(--tw-text);
+}
+#layout-list > .header .tw-listbar,
+#layout-content > .header .tw-bar { flex: 1 1 auto; height: 100%; }
+/* padding-left 20px puts this checkbox on the same vertical line as the row checkboxes (measured) */
+.tw-selectall { display: inline-flex; align-items: center; gap: 0; margin-right: 6px; padding-left: 20px; }
+.tw-selectall input,
+#messagelist td.selection input,
+#tw-ab-all,
+#contacts-table td.selection input { /* one checkbox size for mail and contacts */
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--tw-accent);
+    cursor: pointer;
+}
+body:not(.tw-has-selection) .tw-when-selected,
+body.tw-has-selection .tw-when-none { display: none; }
+.tw-when-selected, .tw-when-none { display: inline-flex; align-items: center; gap: 2px; }
+.tw-pager { display: inline-flex; align-items: center; gap: 2px; margin-left: 8px; }
+.tw-page { color: var(--tw-text-2); font-size: 13px; margin-right: 6px; white-space: nowrap; }
+.tw-count { display: none; }
+
+/* ============================================================ message list */
+#messagelist-content { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 12px 12px; }
+#messagelist, #messagelist > tbody { display: block; width: 100%; border: 0; }
+#messagelist > thead { display: none; }
+#messagelist > tbody > tr {
+    --tw-label: 0px;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-wrap: wrap; /* attachment chips (flex-basis 100%) go to their own line */
+    align-items: center;
+    gap: 0 12px;
+    min-height: calc(44px + var(--tw-label));
+    padding: var(--tw-label) 12px 0;
+    cursor: pointer;
+    border: 0;
+    background: none !important;
+}
+/* cells flatten into the row so their parts can be ordered like Timeweb:
+   checkbox, flag, avatar, sender, subject, attachment, date */
+#messagelist > tbody > tr > td { display: contents; border: 0; padding: 0; background: none; }
+#messagelist > tbody > tr > td.threads { display: none; }
+#messagelist td.selection { order: 0; }
+#messagelist td.selection input { order: 0; flex: none; }
+#messagelist span.flag { order: 1; flex: none; display: inline-flex; width: 18px; height: 18px; }
+#messagelist .tw-avatar { order: 2; }
+#messagelist span.fromto { order: 3; flex: 0 0 180px; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; color: var(--tw-text); }
+#messagelist span.subject { order: 4; flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; margin: 0; overflow: hidden; white-space: nowrap; }
+#messagelist span.subject a { overflow: hidden; text-overflow: ellipsis; color: var(--tw-text) !important; font-size: 14px; text-decoration: none !important; }
+#messagelist span.attachment { order: 5; flex: none; display: inline-flex; color: var(--tw-muted); }
+#messagelist span.date { order: 6; flex: none; float: none; margin: 0; padding: 0; color: var(--tw-muted); font-size: 13px; }
+#messagelist span.size { display: none; }
+
+#messagelist tr.unread span.fromto,
+#messagelist tr.unread span.subject a { font-weight: 700; }
+
+/* hover / selection plate drawn under the row, below the date-group label */
+#messagelist > tbody > tr::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: var(--tw-label) 0 0 0;
+    border-radius: 12px;
+    background: transparent;
+}
+#messagelist > tbody > tr:hover::after { background: var(--tw-hover); }
+#messagelist > tbody > tr.selected::after { background: var(--tw-selected); }
+#messagelist > tbody > tr.focused { outline: 0; }
+#messagelist.focus > tbody > tr.focused:not(.selected)::after { box-shadow: inset 0 0 0 1px #c9d8f8; }
+
+/* date groups (data-tw-group set by breeze.js on the first row of a group) */
+#messagelist > tbody > tr[data-tw-group] { --tw-label: 40px; }
+#messagelist > tbody > tr[data-tw-group]::before {
+    content: attr(data-tw-group);
+    position: absolute;
+    top: 12px;
+    left: 4px;
+    color: var(--tw-muted);
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.tw-avatar {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: center;
+}
+
+/* status icon before the subject: blue dot for unread, reply arrow for answered */
+#messagelist span.msgicon { flex: none; display: inline-flex; width: 14px; height: 14px; margin: 0; }
+#messagelist span.msgicon::before,
+#messagelist span.flag span::before,
+#messagelist span.attachment span::before {
+    content: "" !important;
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti) center / contain no-repeat;
+    mask: var(--ti) center / contain no-repeat;
+}
+#messagelist span.msgicon { --ti: none; color: var(--tw-muted); }
+#messagelist span.msgicon.unread { --ti: url(../images/icons/dot.svg); color: var(--tw-accent); }
+#messagelist span.msgicon.replied { --ti: url(../images/icons/reply.svg); }
+#messagelist span.msgicon.forwarded { --ti: url(../images/icons/forward.svg); }
+#messagelist span.msgicon:not(.unread):not(.replied):not(.forwarded) { display: none; }
+#messagelist span.flag span { display: block; width: 18px; height: 18px; --ti: url(../images/icons/bookmark.svg); color: #c9ccd6; }
+#messagelist tr:not(.flagged):not(:hover) span.flag span { opacity: .55; }
+#messagelist span.flag span.flagged { --ti: url(../images/icons/bookmark-fill.svg); color: var(--tw-red); opacity: 1; }
+#messagelist span.attachment span { display: block; width: 16px; height: 16px; --ti: url(../images/icons/paperclip.svg); }
+#messagelist span.attachment:empty,
+#messagelist span.attachment:not(:has(span)) { display: none; }
+
+#messagelist + .listing-hint,
+#messagelist-content .listing-info,
+#messagelist-content .listing-hint {
+    padding: 48px 16px;
+    color: var(--tw-muted);
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ============================================================ opened message: toolbar + frame */
+#layout-content > .header .tw-back { margin-right: 6px; }
+#layout-content .iframe-wrapper { flex: 1 1 auto; min-height: 0; }
+#layout-content .iframe-wrapper iframe { width: 100%; height: 100%; border: 0; }
+html.layout-small #mailtoolbar .tw-back,
+html.layout-phone #mailtoolbar .tw-back,
+html.layout-small #mailtoolbar .tw-nav-prev,
+html.layout-phone #mailtoolbar .tw-nav-prev,
+html.layout-small #mailtoolbar .tw-nav-next,
+html.layout-phone #mailtoolbar .tw-nav-next { display: none; }
+
+/* message page inside the frame */
+body.action-preview, body.action-show { background: #fff; }
+.tw-message { padding: 4px 24px 24px; }
+.tw-subject { margin: 8px 0 16px; font-size: 20px; font-weight: 600; line-height: 28px; color: var(--tw-text); word-break: break-word; }
+.tw-msg-head { display: flex; align-items: flex-start; gap: 12px; padding-bottom: 16px; }
+.tw-msg-head .tw-avatar { width: 40px; height: 40px; font-size: 16px; line-height: 40px; }
+.tw-msg-meta { flex: 1 1 auto; min-width: 0; font-size: 13px; color: var(--tw-text-2); }
+.tw-msg-meta .header-summary { color: var(--tw-text-2); line-height: 20px; }
+.tw-msg-meta .header-summary a,
+.tw-msg-meta .header-summary .rcmContactAddress { color: var(--tw-text) !important; font-weight: 600; text-decoration: none; }
+.tw-msg-meta .header-headers { margin-top: 6px; font-size: 13px; }
+.tw-msg-meta .header-headers th, .tw-msg-meta .header-headers td { padding: 2px 8px 2px 0; border: 0; }
+.tw-msg-meta .header-links { margin-top: 4px; }
+.tw-msg-meta .header-links a { margin-right: 12px; color: var(--tw-accent) !important; font-size: 13px; }
+.tw-msg-meta .header-links a::before { display: none !important; }
+.tw-msg-actions { flex: none; }
+#message-content { border: 0; }
+#messagebody { padding: 8px 0; font-size: 14px; color: var(--tw-text); }
+#messagebody div.pre { font-family: var(--tw-font); font-size: 14px; line-height: 1.55; }
+.tw-attachments { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px !important; padding: 0 !important; list-style: none; }
+.tw-attachments li {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    max-width: 260px;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--tw-line);
+    border-radius: 8px;
+    background: #fff;
+}
+.tw-attachments li a { color: var(--tw-text) !important; font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ============================================================ floating compose panel */
+.tw-compose {
+    position: fixed;
+    z-index: 1000;
+    right: 24px;
+    bottom: 0;
+    width: 460px;
+    height: min(760px, calc(100vh - 80px));
+    display: flex;
+    flex-direction: column;
+    background: var(--tw-bg);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+.tw-compose[hidden] { display: none; }
+.tw-compose.tw-max { right: 50%; bottom: 50%; transform: translate(50%, 50%); width: min(1100px, calc(100vw - 48px)); height: calc(100vh - 48px); border-radius: 16px; }
+.tw-compose.tw-min { height: 52px; width: 320px; cursor: pointer; }
+.tw-compose.tw-min iframe { visibility: hidden; }
+.tw-compose-head { display: flex; align-items: center; gap: 2px; flex: none; height: 52px; padding: 0 10px 0 16px; }
+.tw-compose-title { flex: 1 1 auto; font-size: 17px; font-weight: 700; color: var(--tw-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tw-compose iframe { flex: 1 1 auto; width: 100%; border: 0; background: var(--tw-bg); }
+html.layout-small .tw-compose,
+html.layout-phone .tw-compose,
+html.layout-small .tw-compose.tw-max,
+html.layout-phone .tw-compose.tw-max { inset: 0; transform: none; width: auto; height: auto; border-radius: 0; }
+html.layout-small .tw-compose [data-tw-compose="max"],
+html.layout-phone .tw-compose [data-tw-compose="max"],
+html.layout-small .tw-compose [data-tw-compose="min"],
+html.layout-phone .tw-compose [data-tw-compose="min"] { display: none; }
+
+/* compose page (inside the panel frame, or as a full page) */
+body.action-compose { background: var(--tw-bg); }
+body.action-compose.iframe #layout-content,
+.tw-composer { display: flex !important; flex-direction: column; height: 100%; background: var(--tw-bg); border: 0; }
+.tw-c-content { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: 0 16px; overflow-y: auto; }
+.tw-c-form { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; margin: 0; padding: 0; }
+.tw-c-fields .compose-headers { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+.tw-c-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 6px 0 12px;
+    background: #fff;
+    border: 1px solid var(--tw-input);
+    border-radius: 10px;
+}
+.tw-c-row.hidden { display: none; }
+.tw-c-row:focus-within { border-color: var(--tw-accent); }
+.tw-c-row > label { flex: none; margin: 0; color: var(--tw-muted); font-size: 13px; }
+.tw-c-row > label:not(.voice) { flex: 0 0 100px; } /* "От": fields with a side label start on one line */
+.tw-c-row .tw-c-input,
+.tw-c-row .tw-c-select,
+.tw-c-row textarea,
+.tw-c-row .recipient-input,
+.tw-c-row .form-control {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: auto;
+    min-height: 32px;
+    padding: 4px 0;
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    color: var(--tw-text);
+    outline: 0;
+}
+.tw-c-row .recipient-input { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0; padding: 4px 0; list-style: none; }
+.tw-c-row .recipient-input li.recipient {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 4px 2px 8px;
+    border-radius: 6px;
+    background: var(--tw-selected);
+    font-size: 13px;
+}
+.tw-c-row .recipient-input li.input { flex: 1 1 120px; display: flex; align-items: center; margin: 0; }
+/* Elastic gives this input margin-top: 4px, which put the text below the row's centre */
+.tw-c-row .recipient-input input { width: 100%; height: 24px; margin: 0 !important; padding: 0 !important; border: 0; outline: 0; background: none; font-size: 14px; line-height: 24px; }
+.tw-c-row .recipient-input { min-height: 32px; padding: 0 !important; }
+.tw-c-row ::placeholder { color: var(--tw-faint); }
+.tw-c-row .recipient-input li.recipient ~ li.input input::placeholder { color: transparent; }
+.tw-c-body { flex: 1 1 auto; min-height: 240px; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--tw-input); border-radius: 10px; overflow: hidden; }
+.tw-c-body textarea#composebody { flex: 1 1 auto; border: 0; border-radius: 0; resize: none; padding: 12px; font-size: 14px; }
+.tw-c-body .tox-tinymce { flex: 1 1 auto; border: 0 !important; border-radius: 0 !important; }
+.tw-c-body .tox .tox-toolbar,
+.tw-c-body .tox .tox-toolbar__primary,
+.tw-c-body .tox .tox-toolbar-overlord,
+.tw-c-body .tox .tox-editor-header { background: #fff !important; border: 0 !important; box-shadow: none !important; }
+.tw-c-body .tox .tox-toolbar__group { padding: 0 4px; border-color: var(--tw-line) !important; }
+.tw-c-body .tox .tox-tbtn { color: var(--tw-text); }
+.tw-c-body .tox .tox-tbtn svg { fill: var(--tw-text) !important; }
+.tw-c-body .html-editor { flex: 1 1 auto; display: flex; flex-direction: column; }
+/* Elastic draws a big drop zone here; keep only the list (dropping files still works, the zone shows while dragging) */
+.tw-c-attachments.file-upload { flex: none; min-height: 0; margin: 0; padding: 0; border: 0; background: none; }
+.tw-c-attachments.file-upload::before,
+.tw-c-attachments.file-upload::after { display: none !important; }
+.tw-c-attachments .attachmentslist:empty { display: none; }
+.tw-c-attachments.active { min-height: 80px; margin-top: 8px; border: 2px dashed var(--tw-accent); border-radius: 10px; }
+.tw-c-body .tox-tinymce { height: auto !important; min-height: 220px; }
+.tw-c-attachments .attachmentslist { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
+.tw-c-attachments .attachmentslist li { margin: 0; padding: 4px 8px; border: 1px solid var(--tw-line); border-radius: 8px; background: #fff; font-size: 13px; }
+.tw-c-foot { display: flex; align-items: center; gap: 8px; flex: none; padding: 12px 16px 16px; }
+.tw-c-send { display: inline-flex; height: 36px; border-radius: 10px; overflow: hidden; background: var(--tw-accent); }
+.tw-c-send .tw-send,
+.tw-c-send .tw-send-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.tw-c-send .tw-send { padding: 0 16px; }
+.tw-c-send .tw-send .inner { display: inline; }
+.tw-c-send .tw-send-more { width: 32px; border-left: 1px solid rgba(255, 255, 255, .35); }
+.tw-c-send .tw-send-more .inner { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.tw-c-send a:hover { background: var(--tw-accent-hover); }
+.tw-c-send .tw-send.disabled { opacity: .6; }
+.tw-c-saved { color: var(--tw-muted); font-size: 12px; white-space: nowrap; }
+.tw-c-status { position: absolute; }
+/* own dropdowns (breeze.js positions them next to their button) */
+.tw-menu {
+    position: fixed;
+    z-index: 1100;
+    min-width: 200px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 6px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(5, 12, 38, .12), 0 0 0 1px rgba(5, 12, 38, .04);
+}
+.tw-menu[hidden] { display: none; }
+.tw-menu ul { margin: 0; padding: 0; list-style: none; border: 0; background: none; }
+.tw-menu li { margin: 0; padding: 0; border: 0; }
+.tw-menu li > a {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.tw-menu li > a::before { display: none !important; } /* Elastic's glyphs */
+.tw-menu li > a:hover, .tw-menu li > a:focus { background: var(--tw-hover); outline: 0; }
+.tw-menu li > a.disabled { opacity: .4; pointer-events: none; }
+.tw-menu li.separator label { display: block; margin: 6px 10px 2px; color: var(--tw-muted); font-size: 12px; font-weight: 600; }
+
+/* compose options: label left, control right, one height for every row */
+.tw-popform { width: 340px; padding: 8px 14px; }
+.tw-popform .formcontent { padding: 0; }
+.tw-opt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 40px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tw-text);
+    cursor: pointer;
+}
+.tw-opt + .tw-opt { border-top: 1px solid var(--tw-line); }
+.tw-opt > span { flex: 1 1 auto; min-width: 0; line-height: 18px; }
+.tw-opt input[type="checkbox"] { flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--tw-accent); }
+.tw-opt select { flex: 0 0 150px; width: 150px; height: 36px; border: 1px solid var(--tw-input); border-radius: 8px; font-size: 14px; }
+
+/* ============================================================ login */
+body.task-login #layout { display: block; height: auto; }
+html body.task-login #layout > #layout-content {
+    width: auto !important;
+    margin: 0;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 16px;
+    box-sizing: border-box;
+    background: var(--tw-bg);
+}
+body.task-login #logo,
+body.task-login #login-footer { display: none; }
+body.task-login #login-form {
+    top: 0; /* Elastic pushes the form down by 20% */
+    width: 386px;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid #edeef3;
+    border-radius: 24px;
+    box-shadow: 0 5px 20px rgba(27, 54, 74, .03);
+    text-align: left;
+}
+body.task-login .tw-logo { display: block; margin-bottom: 16px; text-align: center; font-size: 22px; }
+.tw-login-title { margin: 0 0 24px; text-align: center; font-size: 24px; font-weight: 700; line-height: 32px; color: var(--tw-text); }
+.tw-field { margin-bottom: 16px; }
+.tw-field label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--tw-muted); }
+.tw-input { position: relative; }
+body.task-login .tw-input input.form-control {
+    width: 100%;
+    height: 44px;
+    padding: 12px 44px 12px 16px;
+    border: 1px solid var(--tw-input);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tw-text);
+}
+body.task-login .tw-input input.form-control:focus { border-color: var(--tw-accent); }
+.tw-input input::placeholder { color: var(--tw-faint); font-weight: 400; }
+.tw-eye {
+    position: absolute;
+    top: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border: 0;
+    background: none;
+    color: var(--tw-muted);
+    cursor: pointer;
+}
+body.task-login #login-form .formbuttons { margin: 24px 0 0; padding: 0; }
+body.task-login #rcmloginsubmit {
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    border: 0;
+    border-radius: 12px;
+    background: var(--tw-accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+    opacity: 1;
+}
+body.task-login #rcmloginsubmit.tw-inactive { background: #e8ebef; color: var(--tw-faint); }
+html.layout-phone body.task-login #login-form { padding: 24px 20px; border-radius: 16px; }
+html.layout-phone .tw-login-title { font-size: 20px; line-height: 28px; }
+
+/* ============================================================ settings and contacts (Elastic templates) */
+.tw-back-mail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    height: 43px;
+    margin: 0 0 16px;
+    padding: 0 12px;
+    border: 1.25px solid #d7d9e2;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+.tw-back-mail:hover { background: #fff; }
+html.layout-large body.task-settings #layout-sidebar > .header,
+html.layout-normal body.task-settings #layout-sidebar > .header,
+html.layout-large body.task-addressbook #layout-sidebar > .header,
+html.layout-normal body.task-addressbook #layout-sidebar > .header { display: none; }
+#settings-menu, #settings-menu li { margin: 0; padding: 0; border: 0; background: none; list-style: none; }
+#settings-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+#settings-menu li a::before {
+    content: "" !important;
+    flex: none;
+    position: static !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti, url(../images/icons/settings.svg)) center / contain no-repeat;
+    mask: var(--ti, url(../images/icons/settings.svg)) center / contain no-repeat;
+}
+#settings-menu li.preferences a { --ti: url(../images/icons/sliders.svg); }
+#settings-menu li.folders a { --ti: url(../images/icons/folder.svg); }
+#settings-menu li.identities a { --ti: url(../images/icons/id-card.svg); }
+#settings-menu li.responses a { --ti: url(../images/icons/message.svg); }
+#settings-menu li.selected a,
+#settings-menu li a:hover { background: #fff; }
+
+/* headers of the cards: no Elastic grey band; settings show the section title in the content header */
+html #layout > #layout-list > .header,
+html #layout > #layout-content > .header { background: transparent; }
+html.layout-large body.task-settings #layout-list > .header,
+html.layout-normal body.task-settings #layout-list > .header { display: none; }
+html.layout-large body.task-settings #layout-content > .header,
+html.layout-normal body.task-settings #layout-content > .header { padding: 0 24px; }
+html.layout-large body.task-settings #layout-content > .header .header-title,
+html.layout-normal body.task-settings #layout-content > .header .header-title { margin: 0 !important; padding: 0 !important; text-align: left; font-size: 20px; }
+html.layout-large body.task-settings #layout-list .scroller,
+html.layout-normal body.task-settings #layout-list .scroller { padding-top: 12px; }
+
+/* section list icons from the skin set */
+/* Elastic floats the icon and sets a 35px line-height: centre icon and text with flex instead */
+#sections-table td.section { display: flex; align-items: center; gap: 10px; line-height: 20px; }
+#sections-table td.section::before {
+    content: "" !important;
+    display: block !important;
+    float: none !important;
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti, url(../images/icons/settings.svg)) center / contain no-repeat;
+    mask: var(--ti, url(../images/icons/settings.svg)) center / contain no-repeat;
+}
+#sections-table tr.general { --ti: url(../images/icons/sliders.svg); }
+#sections-table tr.mailbox { --ti: url(../images/icons/inbox.svg); }
+#sections-table tr.mailview { --ti: url(../images/icons/mail-open.svg); }
+#sections-table tr.compose { --ti: url(../images/icons/mail.svg); }
+#sections-table tr.addressbook { --ti: url(../images/icons/contacts.svg); }
+#sections-table tr.folders { --ti: url(../images/icons/folder.svg); }
+#sections-table tr.server { --ti: url(../images/icons/settings.svg); }
+#sections-table tr.encryption { --ti: url(../images/icons/lock.svg); }
+#identities-table td::before,
+#responses-table td::before,
+#subscription-table td::before { display: none !important; }
+
+/* Elastic toolbars in the content header of settings / contacts (ui.js renders them as ul#toolbar-menu):
+   one row on the right, icon left of the label, same look as .tw-btn */
+body.task-settings #layout-content > .header,
+body.task-addressbook #layout-content > .header, body.action-get #layout-content > .header { gap: 12px; padding-right: 32px !important; overflow: visible; }
+body.task-settings #layout-content > .header .header-title,
+body.task-addressbook #layout-content > .header .header-title, body.action-get #layout-content > .header .header-title { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.task-settings #layout-content > .header #toolbar-menu,
+body.task-addressbook #layout-content > .header #toolbar-menu, body.action-get #layout-content > .header #toolbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    list-style: none;
+}
+/* Elastic gives each button a fixed 84px width with overflow:hidden and stretches the items to the header height */
+body.task-settings #layout-content > .header #toolbar-menu,
+body.task-addressbook #layout-content > .header #toolbar-menu, body.action-get #layout-content > .header #toolbar-menu { height: auto !important; align-self: center; }
+body.task-settings #layout-content > .header #toolbar-menu li,
+body.task-addressbook #layout-content > .header #toolbar-menu li, body.action-get #layout-content > .header #toolbar-menu li { display: flex; align-items: center; height: auto !important; width: auto !important; margin: 0; padding: 0; border: 0; overflow: visible; }
+body.task-settings #layout-content > .header #toolbar-menu li > a,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a, body.action-get #layout-content > .header #toolbar-menu li > a { width: auto !important; max-width: none !important; overflow: visible !important; }
+body.task-settings #layout-content > .header #toolbar-menu li > a .inner,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a .inner, body.action-get #layout-content > .header #toolbar-menu li > a .inner { display: inline !important; }
+body.task-settings #layout-content > .header #toolbar-menu li > a,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a, body.action-get #layout-content > .header #toolbar-menu li > a {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    width: auto;
+    min-width: 0;
+    height: 32px;
+    margin: 0;
+    padding: 0 10px;
+    border-radius: 8px;
+    color: var(--tw-text) !important;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+body.task-settings #layout-content > .header #toolbar-menu li > a:hover,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a:hover, body.action-get #layout-content > .header #toolbar-menu li > a:hover { background: var(--tw-hover); }
+body.task-settings #layout-content > .header #toolbar-menu li > a.disabled,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a.disabled, body.action-get #layout-content > .header #toolbar-menu li > a.disabled { opacity: .4; }
+body.task-settings #layout-content > .header #toolbar-menu li > a .inner,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a .inner, body.action-get #layout-content > .header #toolbar-menu li > a .inner {
+    display: inline; position: static; width: auto; height: auto; padding: 0; overflow: visible; max-width: none; font-size: 13px;
+}
+body.task-settings #layout-content > .header #toolbar-menu li > a::before,
+body.task-addressbook #layout-content > .header #toolbar-menu li > a::before, body.action-get #layout-content > .header #toolbar-menu li > a::before {
+    content: "" !important;
+    display: block !important;
+    position: static !important;
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti, url(../images/icons/more.svg)) center / contain no-repeat;
+    mask: var(--ti, url(../images/icons/more.svg)) center / contain no-repeat;
+}
+#toolbar-menu a.create, #toolbar-menu a.add { --ti: url(../images/icons/plus.svg); }
+#toolbar-menu a.delete, #toolbar-menu a.purge { --ti: url(../images/icons/trash.svg); }
+#toolbar-menu a.compose { --ti: url(../images/icons/mail.svg); }
+#toolbar-menu a.print { --ti: url(../images/icons/printer.svg); }
+#toolbar-menu a.import { --ti: url(../images/icons/download.svg); }
+#toolbar-menu a.export, #toolbar-menu a.download { --ti: url(../images/icons/download.svg); }
+#toolbar-menu a.edit { --ti: url(../images/icons/drafts.svg); }
+#toolbar-menu a.search { --ti: url(../images/icons/search.svg); }
+#toolbar-menu a.qrcode, #toolbar-menu a.vcard { --ti: url(../images/icons/id-card.svg); }
+#toolbar-menu a.move, #toolbar-menu a.copy { --ti: url(../images/icons/folder.svg); }
+
+/* folder subscriptions (Settings > Folders): rows like the mail sidebar */
+#subscription-table, #subscription-table li { margin: 0; padding: 0; list-style: none; border: 0; background: none; }
+#subscription-table { padding: 4px 8px; }
+#subscription-table li.mailbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 8px 0 0;
+    border-radius: 8px;
+}
+#subscription-table li.mailbox:hover { background: var(--tw-hover); }
+#subscription-table li.mailbox.selected { background: var(--tw-selected); }
+#subscription-table li.mailbox > a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 40px;
+    padding: 0 0 0 12px;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#subscription-table li.mailbox > a::before {
+    content: "" !important;
+    display: block !important;
+    position: static !important;
+    flex: none;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: var(--ti, url(../images/icons/folder.svg)) center / contain no-repeat;
+    mask: var(--ti, url(../images/icons/folder.svg)) center / contain no-repeat;
+}
+#subscription-table li.inbox > a { --ti: url(../images/icons/inbox.svg); }
+#subscription-table li.drafts > a { --ti: url(../images/icons/drafts.svg); }
+#subscription-table li.sent > a { --ti: url(../images/icons/send.svg); }
+#subscription-table li.junk > a { --ti: url(../images/icons/spam.svg); }
+#subscription-table li.trash > a { --ti: url(../images/icons/trash.svg); }
+#subscription-table li.archive > a { --ti: url(../images/icons/archive.svg); }
+#subscription-table li .custom-switch { flex: none; margin: 0; }
+#subscription-table ul { margin: 0; padding: 0 0 0 16px; }
+body.task-settings #layout-list > .footer .quota-widget { display: none; }
+body.task-settings #layout-list > .searchbar {
+    margin: 12px 12px 4px;
+    padding: 0 8px;
+    height: 40px;
+    background: var(--tw-bg);
+    border: 0;
+    border-radius: 8px;
+}
+body.task-settings #layout-list > .searchbar input { background: none; border: 0; font-size: 14px; }
+
+/* list column of settings / contacts */
+body.task-settings #layout-list .header,
+body.task-addressbook #layout-list .header,
+body.task-settings #layout-content > .header,
+body.task-addressbook #layout-content > .header { border-bottom: 1px solid var(--tw-line); }
+body.task-settings #layout-list .header-title,
+body.task-addressbook #layout-list .header-title,
+body.task-settings #layout-content > .header .header-title,
+body.task-addressbook #layout-content > .header .header-title, body.action-get #layout-content > .header .header-title { font-size: 16px; font-weight: 700; color: var(--tw-text); }
+body.task-settings #layout-list table.listing,
+body.task-addressbook #layout-list table.listing { border-collapse: separate; border-spacing: 0 2px; padding: 0 8px; }
+body.task-settings #layout-list table.listing td,
+body.task-addressbook #layout-list table.listing td { border: 0; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--tw-text); }
+body.task-settings #layout-list table.listing tr.selected td,
+body.task-addressbook #layout-list table.listing tr.selected td { background: var(--tw-selected); color: var(--tw-text); }
+body.task-settings #layout-list table.listing tr:hover td,
+body.task-addressbook #layout-list table.listing tr:hover td { background: var(--tw-hover); }
+
+/* preference / identity forms inside the content frame */
+body.task-settings.formcontainer,
+body.task-settings.formcontainer #layout-content,
+body.task-settings.formcontainer .formcontent,
+body.task-settings.formcontainer .formbuttons { background: #fff; }
+body.task-settings .formcontent { padding: 24px; box-sizing: border-box; }
+html.layout-large body.task-settings #layout-content > .header .header-title,
+html.layout-normal body.task-settings #layout-content > .header .header-title { display: block !important; position: static; }
+body.task-settings .formcontent fieldset { margin: 0 0 24px; padding: 0; border: 0; }
+body.task-settings .formcontent legend { margin: 0 0 12px; padding: 0; border: 0; font-size: 14px; font-weight: 400; color: var(--tw-text-2); }
+/* one grey card per group, full width, no row grid: label on the left, control at the right edge.
+   Elastic makes each row a Bootstrap flex row (tr.form-group.row with col-sm-* cells), hence the resets. */
+body.task-settings table.propform { display: block; width: 100%; padding: 4px 0; background: var(--tw-bg); border-radius: 12px; }
+body.task-settings table.propform > tbody { display: block; }
+body.task-settings table.propform tr,
+body.task-settings table.propform tr.form-group.row.form-check {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+    margin: 0;
+    padding: 10px 16px;
+    background: none;
+    border: 0;
+}
+body.task-settings table.propform td {
+    display: block;
+    min-width: 0;
+    max-width: none;
+    padding: 0 !important;
+    background: none;
+    border: 0;
+    font-size: 14px;
+    color: var(--tw-text);
+}
+body.task-settings table.propform td.title { flex: 1 1 260px; font-weight: 500; }
+body.task-settings table.propform td:not(.title) {
+    flex: 0 1 360px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 12px;
+}
+body.task-settings table.propform td:not(.title) > .form-control,
+body.task-settings table.propform td:not(.title) > .custom-select,
+body.task-settings table.propform td:not(.title) > .input-group { flex: 1 1 100%; }
+body.task-settings table.propform td:not(.title) .custom-switch { margin: 0; }
+body.task-settings table.propform .form-control,
+body.task-settings table.propform .custom-select {
+    min-height: 36px;
+    border: 1px solid var(--tw-input);
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tw-text);
+}
+input.custom-switch:checked,
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:checked ~ .custom-control-label::before { background-color: var(--tw-accent) !important; border-color: var(--tw-accent) !important; }
+body.task-settings .formbuttons { box-sizing: border-box; padding: 0 24px 24px; border: 0; }
+/* Save lives in the parent window: content header on wide screens (breeze.js), Elastic's bottom bar on phones */
+html.iframe body.task-settings .formbuttons { display: none; }
+html.layout-large body.task-settings #layout-content > .header,
+html.layout-normal body.task-settings #layout-content > .header { justify-content: space-between; }
+.tw-save { flex: none; height: 36px; padding: 0 20px; font-size: 14px; }
+.tw-save[hidden] { display: none; }
+html.layout-small .tw-save,
+html.layout-phone .tw-save { display: none; }
+html.layout-phone body.task-settings .formcontent { padding: 12px; }
+/* narrow: control goes under its label, left-aligned */
+html.layout-phone body.task-settings table.propform td:not(.title),
+html.layout-small body.task-settings table.propform td:not(.title) { flex: 1 1 100%; justify-content: flex-start; }
+
+/* ============================================================ shared widgets (Elastic popups, buttons, messages) */
+.btn-primary,
+.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: var(--tw-accent);
+    border-color: var(--tw-accent);
+    border-radius: 8px;
+    font-weight: 600;
+}
+.btn-primary:hover { background-color: var(--tw-accent-hover); border-color: var(--tw-accent-hover); }
+.popover { border: 0; border-radius: 12px; box-shadow: 0 4px 12px rgba(5, 12, 38, .12); }
+.popover .listing li a,
+.popover .menu li a { font-size: 14px; color: var(--tw-text); }
+#messagestack div { border-radius: 10px; font-size: 13px; }
+
+/* ============================================================ Elastic list popups: address autocomplete (#rcmKSearchpane),
+   pretty selects, folder selector. White card, light-blue highlight with dark text (no filled accent rows) */
+.select-menu.popover,
+#rcmKSearchpane {
+    padding: 4px;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(5, 12, 38, .12), 0 0 0 1px rgba(5, 12, 38, .04);
+    overflow: hidden;
+}
+.select-menu .listing,
+#rcmKSearchpane ul { margin: 0; padding: 0; border: 0; background: none; }
+.select-menu .listing li,
+#rcmKSearchpane li {
+    display: block; /* not flex: the matched part is a <b> next to text nodes, flex gaps would split words */
+    min-height: 36px;
+    line-height: 36px;
+    margin: 0;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-text);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.select-menu .listing li a { color: var(--tw-text) !important; }
+.select-menu .listing li:hover,
+#rcmKSearchpane li:hover { background: var(--tw-hover); }
+.select-menu .listing li.selected,
+.select-menu .listing li.selected *,
+#rcmKSearchpane li.selected,
+#rcmKSearchpane li.selected * { background-color: transparent; color: var(--tw-text) !important; }
+.select-menu .listing li.selected,
+#rcmKSearchpane li.selected { background-color: var(--tw-selected) !important; }
+#rcmKSearchpane li b { font-weight: 700; }
+#rcmKSearchpane li i.icon { display: inline-block; width: 18px; height: 18px; margin: 0 8px 0 0; padding: 0; vertical-align: -4px; }
+#rcmKSearchpane li i.icon::before {
+    content: "" !important;
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    background-color: var(--tw-muted);
+    -webkit-mask: url(../images/icons/user.svg) center / contain no-repeat;
+    mask: url(../images/icons/user.svg) center / contain no-repeat;
+}
+/* pretty selects (Elastic replaces <select> with this popup): small check before the chosen option, no side stripe */
+.select-menu .listing li { padding: 0; line-height: normal; min-height: 0; }
+.select-menu .listing li > a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px 0 34px !important;
+    border: 0 !important;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    text-decoration: none !important;
+}
+.select-menu .listing li > a:hover,
+.select-menu .listing li > a:focus { background: var(--tw-hover) !important; outline: 0; }
+.select-menu .listing li > a.selected { background: var(--tw-selected) !important; font-weight: 500; }
+.select-menu .listing li > a::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 12px;
+    top: 50%;
+    width: 14px !important;
+    height: 14px !important;
+    margin: -7px 0 0 !important;
+    font-size: 0 !important;
+    background-color: transparent;
+    -webkit-mask: url(../images/icons/check.svg) center / contain no-repeat;
+    mask: url(../images/icons/check.svg) center / contain no-repeat;
+}
+.select-menu .listing li > a.selected::before { background-color: var(--tw-accent); }
+html.layout-large .select-menu .popover-header,
+html.layout-normal .select-menu .popover-header { display: none; }
+/* long lists scroll inside the popup (Elastic sets max-height inline on .popover-body) */
+.select-menu .popover-body { overflow-y: auto; overscroll-behavior: contain; }
+.select-menu.popover { z-index: 2100; }
+.select-menu .popover-arrow, .select-menu .arrow { display: none; }
+
+/* Elastic popover menus (mark, more, move...): same rows as .tw-menu */
+.popover .listing li a,
+.popover .menu li a { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 10px; border-radius: 8px; }
+.popover .listing li a:hover,
+.popover .listing li a:focus,
+.popover .menu li a:hover { background: var(--tw-hover) !important; color: var(--tw-text) !important; }
+.popover .listing li a.disabled { opacity: .4; }
+.popover-body { padding: 4px; }
+.popover .popover-header { border-radius: 12px 12px 0 0; }
+
+/* form controls everywhere: skin border, accent focus ring instead of Elastic's cyan glow */
+.form-control:focus,
+.custom-select:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: var(--tw-accent) !important;
+    box-shadow: 0 0 0 3px rgba(49, 123, 255, .15) !important;
+    outline: 0;
+}
+/* fields inside a compose row: the row itself shows focus */
+.tw-c-row input:focus,
+.tw-c-row textarea:focus,
+.tw-c-row .recipient-input.focus,
+#tw-search-slot .searchbar input:focus { border-color: transparent !important; box-shadow: none !important; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--tw-accent); }
+.btn-secondary,
+.btn-secondary:not(:disabled):not(.disabled):active {
+    background: #eef0f4;
+    border-color: #eef0f4;
+    color: var(--tw-text);
+    border-radius: 12px;
+    font-weight: 600;
+}
+.btn-secondary:hover { background: #e3e6ec; border-color: #e3e6ec; color: var(--tw-text); }
+.btn-danger, .btn-danger:not(:disabled):not(.disabled):active { background: var(--tw-red); border-color: var(--tw-red); border-radius: 12px; font-weight: 600; }
+.btn::before { display: none !important; } /* Elastic's glyphs in buttons (check, cross, trash) */
+::selection { background: rgba(49, 123, 255, .2); }
+
+/* ============================================================ Roundcube dialogs (jQuery UI: confirm, alerts, forms)
+   Same look as the skin's own .tw-modal. !important where Elastic/jQuery UI theme set the same properties inline-strong. */
+.ui-widget-overlay { background: rgba(10, 27, 57, .35) !important; opacity: 1 !important; }
+/* jQuery UI sets fixed inline heights computed for Elastic's paddings; with ours the bottom got clipped */
+.ui-dialog.ui-widget,
+.ui-dialog .ui-dialog-content { height: auto !important; min-height: 0 !important; }
+.ui-dialog .ui-dialog-content { max-height: calc(100vh - 200px); overflow-y: auto; }
+.ui-dialog.ui-widget {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 24px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2) !important;
+    overflow: visible; /* Elastic puts select popups inside the dialog: they must not be clipped */
+    font-family: var(--tw-font);
+}
+.ui-dialog .ui-dialog-titlebar {
+    position: relative;
+    padding: 22px 64px 6px 24px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+}
+.ui-dialog .ui-dialog-title { float: none; width: auto; margin: 0 !important; padding: 0 !important; font-size: 20px; font-weight: 700; line-height: 28px; color: var(--tw-text); white-space: normal; }
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute !important;
+    top: 18px !important;
+    right: 16px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: none !important;
+    color: var(--tw-text) !important;
+}
+.ui-dialog .ui-dialog-titlebar-close:hover { background: var(--tw-hover) !important; }
+.ui-dialog .ui-dialog-titlebar-close .ui-icon,
+.ui-dialog .ui-dialog-titlebar-close .ui-button-icon-space { display: none !important; }
+.ui-dialog .ui-dialog-titlebar-close::before {
+    content: "" !important;
+    display: block !important;
+    position: static !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: auto !important;
+    font-size: 0 !important;
+    background-color: currentColor;
+    -webkit-mask: url(../images/icons/close.svg) center / contain no-repeat;
+    mask: url(../images/icons/close.svg) center / contain no-repeat;
+}
+.ui-dialog .ui-dialog-content {
+    box-sizing: border-box;
+    width: 100% !important; /* content-box + padding made it wider than the dialog */
+    padding: 8px 24px 8px !important;
+    background: none !important;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    height: auto !important; /* Elastic fixes it at 56px */
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 16px 24px 24px !important;
+    border: 0 !important;
+    background: none !important;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; float: none !important; }
+.ui-dialog .ui-dialog-buttonpane button,
+.ui-dialog .ui-dialog-buttonpane .btn {
+    height: 44px;
+    margin: 0 !important;
+    padding: 0 20px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    background: #eef0f4 !important;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+}
+.ui-dialog .ui-dialog-buttonpane button::before,
+.ui-dialog .ui-dialog-buttonpane .btn::before { display: none !important; } /* Elastic's glyphs (trash, cross, check) */
+.ui-dialog .ui-dialog-buttonpane button:hover { background: #e3e6ec !important; }
+.ui-dialog .ui-dialog-buttonpane .btn-primary,
+.ui-dialog .ui-dialog-buttonpane .mainaction { background: var(--tw-accent) !important; color: #fff !important; }
+.ui-dialog .ui-dialog-buttonpane .btn-primary:hover,
+.ui-dialog .ui-dialog-buttonpane .mainaction:hover { background: var(--tw-accent-hover) !important; }
+.ui-dialog .ui-dialog-buttonpane .btn-danger,
+.ui-dialog .ui-dialog-buttonpane .delete.mainaction { background: var(--tw-red) !important; color: #fff !important; }
+.ui-dialog .ui-dialog-buttonpane .btn-danger:hover,
+.ui-dialog .ui-dialog-buttonpane .delete.mainaction:hover { background: #d93349 !important; }
+.ui-dialog .ui-dialog-buttonpane button:focus-visible,
+.ui-dialog .ui-dialog-titlebar-close:focus-visible { outline: 2px solid var(--tw-accent); outline-offset: 2px; }
+.ui-dialog .ui-resizable-handle { background: none !important; }
+.ui-dialog.tw-instant .ui-dialog-content { padding-bottom: 24px !important; } /* no button row below */
+/* dialogs showing a page in a frame (About, ...): the page sets the 24px side padding itself */
+.ui-dialog .ui-dialog-content:has(> iframe) { padding: 0 !important; overflow: hidden; }
+.ui-dialog .ui-dialog-content > iframe { display: block; width: 100% !important; height: min(60vh, 520px); border: 0; } /* breeze.js fits it to the page */
+body.action-about { background: #fff; }
+body.action-about .frame-content { padding: 4px 24px 16px; color: var(--tw-text); font-size: 14px; line-height: 1.55; }
+body.action-about .sysname { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+body.action-about .copyright { margin: 0 0 16px; color: var(--tw-muted); }
+body.action-about .license { margin: 0 0 16px; }
+body.action-about a { color: var(--tw-accent) !important; }
+body.action-about h3 { margin: 16px 0 8px; font-size: 15px; font-weight: 700; }
+body.action-about table { width: 100%; border-collapse: collapse; font-size: 13px; }
+body.action-about table th,
+body.action-about table td { padding: 6px 8px 6px 0 !important; border: 0; border-bottom: 1px solid var(--tw-line); text-align: left; }
+body.action-about table th { color: var(--tw-muted); font-weight: 600; }
+html.iframe body.action-about { height: auto; min-height: 0; overflow: visible; }
+.ui-dialog .ui-dialog-content .form-control,
+.ui-dialog .ui-dialog-content .custom-select { min-height: 44px; border: 1px solid var(--tw-input); border-radius: 12px; font-size: 14px; }
+html.layout-phone .ui-dialog.ui-widget { border-radius: 16px !important; }
+html.layout-phone .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { flex-direction: column-reverse; }
+html.layout-phone .ui-dialog .ui-dialog-buttonpane button { width: 100%; }
+
+/* form rows inside dialogs and popups (Bootstrap .form-group.row with col-* cells):
+   label on one line at the left, the field takes the rest, both centred on one axis */
+.ui-dialog .form-group.row,
+.popover .form-group.row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 16px;
+    margin: 0 0 12px;
+}
+.ui-dialog .form-group.row:last-child,
+.popover .form-group.row:last-child { margin-bottom: 0; }
+.ui-dialog .form-group.row > label,
+.ui-dialog .form-group.row > .col-form-label,
+.popover .form-group.row > label,
+.popover .form-group.row > .col-form-label {
+    flex: 0 0 170px;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--tw-text);
+}
+.ui-dialog .form-group.row > div[class*="col-"],
+.popover .form-group.row > div[class*="col-"] { flex: 1 1 auto; max-width: none; min-width: 0; padding: 0; }
+.ui-dialog .form-group.row select,
+.popover .form-group.row select { width: 100%; height: 44px; }
+html.layout-phone .ui-dialog .form-group.row { flex-wrap: wrap; gap: 6px; }
+html.layout-phone .ui-dialog .form-group.row > label,
+html.layout-phone .ui-dialog .form-group.row > .col-form-label { flex-basis: 100%; }
+
+/* Bootstrap's .col-form-label padding put label text 2px above the field centre */
+body.task-settings table.propform td.title label,
+body.task-settings table.propform td.title .col-form-label { display: block; margin: 0; padding: 0; line-height: 20px; }
+/* multi-line fields and editors (signature, response text) take the whole row */
+body.task-settings table.propform tr:has(td:not(.title) textarea) > td:not(.title) { flex: 1 1 100%; justify-content: stretch; }
+body.task-settings table.propform td:not(.title) textarea,
+body.task-settings table.propform td:not(.title) .html-editor,
+body.task-settings table.propform td:not(.title) .tox-tinymce { width: 100% !important; max-width: none; }
+
+/* settings rows with a hint under the field: label lines up with the field, not the field+hint block */
+body.task-settings table.propform tr:has(td:not(.title) .form-text, td:not(.title) small) { align-items: flex-start; }
+body.task-settings table.propform tr:has(td:not(.title) .form-text, td:not(.title) small) > td.title { padding-top: 9px !important; }
+
+/* ============================================================ search options: dropdown card under the search box */
+#tw-search-slot { position: relative; }
+#tw-search-slot #searchmenu {
+    position: absolute;
+    z-index: 300;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    height: auto !important;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 16px;
+    background: #fff;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(5, 12, 38, .12), 0 0 0 1px rgba(5, 12, 38, .04);
+}
+#tw-search-slot #searchmenu.hidden { display: none !important; }
+#searchmenu .formcontent { padding: 0; }
+#searchmenu .proplist {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px 16px;
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+}
+#searchmenu .proplist li { margin: 0; padding: 0; border: 0; }
+#searchmenu .proplist label { display: flex; align-items: center; gap: 8px; min-height: 32px; margin: 0; font-size: 14px; color: var(--tw-text); cursor: pointer; }
+#searchmenu .input-group { display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; margin: 0 0 10px; }
+#searchmenu .input-group-prepend { flex: 0 0 90px; margin: 0; }
+#searchmenu .input-group-text {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--tw-text);
+    font-size: 14px;
+    font-weight: 500;
+}
+#searchmenu .input-group > select,
+#searchmenu .input-group > .custom-select {
+    flex: 1 1 auto;
+    width: auto;
+    height: 40px;
+    border: 1px solid var(--tw-input) !important;
+    border-radius: 10px !important;
+    background-color: #fff;
+    font-size: 14px;
+}
+#searchmenu .formbuttons { display: flex; justify-content: flex-end; margin: 6px 0 0; padding: 0; border: 0; background: none; }
+#searchmenu .formbuttons .btn { height: 40px; padding: 0 20px; border-radius: 10px; }
+#searchmenu .formbuttons .btn::before { display: none !important; }
+
+/* ============================================================ phones and small tablets (Elastic panel switching) */
+html.layout-small #layout-menu,
+html.layout-phone #layout-menu { background: var(--tw-bg); }
+html.layout-small #layout-menu .popover-header,
+html.layout-phone #layout-menu .popover-header { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; background: var(--tw-bg); }
+html.layout-small #layout-menu .popover-header a.cancel,
+html.layout-phone #layout-menu .popover-header a.cancel { color: var(--tw-text); }
+html.layout-small #taskmenu,
+html.layout-phone #taskmenu { display: flex; flex-direction: column; align-items: stretch; gap: 2px; padding: 8px; background: var(--tw-bg); }
+html.layout-small #taskmenu .special-buttons,
+html.layout-phone #taskmenu .special-buttons { flex-direction: column; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--tw-line); }
+html.layout-small #taskmenu a.tw-nav,
+html.layout-phone #taskmenu a.tw-nav,
+html.layout-small #taskmenu a.tw-nav.tw-icon-only,
+html.layout-phone #taskmenu a.tw-nav.tw-icon-only { width: auto; height: 44px; padding: 0 12px; justify-content: flex-start; font-size: 15px; }
+html.layout-small #taskmenu a.tw-nav .inner,
+html.layout-phone #taskmenu a.tw-nav .inner,
+html.layout-small #taskmenu a.tw-nav.tw-icon-only .inner,
+html.layout-phone #taskmenu a.tw-nav.tw-icon-only .inner { position: static; width: auto; height: auto; clip: auto; font-size: 15px; }
+html.layout-small #tw-search-slot,
+html.layout-phone #tw-search-slot { display: none; }
+
+html.layout-small #layout > div,
+html.layout-phone #layout > div { background: #fff; }
+html.layout-small #layout-sidebar,
+html.layout-phone #layout-sidebar { background: var(--tw-bg) !important; padding: 0 8px; }
+html.layout-small #layout-sidebar > .header,
+html.layout-phone #layout-sidebar > .header { background: var(--tw-bg); border: 0; }
+html.layout-small #layout > div > .header,
+html.layout-phone #layout > div > .header { height: 52px; border-bottom: 1px solid var(--tw-line); }
+html.layout-small #layout > div > .header a.button,
+html.layout-phone #layout > div > .header a.button { color: var(--tw-text); }
+
+/* list header on phones: compact icon bar under the title row */
+html.layout-small #layout > #layout-list > #messagelist-header,
+html.layout-phone #layout > #layout-list > #messagelist-header { flex-wrap: wrap; height: auto; min-height: 52px; padding: 0 8px; }
+/* ui.js centres the title with inline margins; here it sits next to the menu buttons */
+html.layout-small #messagelist-header .header-title,
+html.layout-phone #messagelist-header .header-title {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 52px;
+    margin: 0 !important;
+    padding: 0 8px !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    line-height: 52px;
+    font-size: 17px;
+    font-weight: 700;
+}
+html.layout-small .tw-c-foot .ti-external,
+html.layout-phone .tw-c-foot .ti-external { display: none; }
+/* floating compose button (cloned by ui.js from the compose link) */
+.floating-action-buttons a.button { display: flex !important; align-items: center; justify-content: center; color: #fff !important; }
+.floating-action-buttons a.button.ti::before { width: 22px !important; height: 22px !important; }
+.floating-action-buttons a.button .inner { display: none; }
+html.layout-small #messagelist-header .tw-listbar,
+html.layout-phone #messagelist-header .tw-listbar { flex: 0 0 100%; order: 5; height: 44px; overflow-x: auto; }
+html.layout-small .tw-listbar .tw-btn:not(.tw-icon-only) .inner,
+html.layout-phone .tw-listbar .tw-btn:not(.tw-icon-only) .inner { display: none; }
+html.layout-small .tw-listbar .tw-btn:not(.tw-icon-only),
+html.layout-phone .tw-listbar .tw-btn:not(.tw-icon-only) { width: 32px; padding: 0; justify-content: center; }
+html.layout-small #layout-list > .searchbar,
+html.layout-phone #layout-list > .searchbar { margin: 8px 12px; padding: 0 8px; height: 40px; background: var(--tw-bg); border: 0; border-radius: 8px; }
+html.layout-small #layout-list > .searchbar input,
+html.layout-phone #layout-list > .searchbar input { background: none; border: 0; font-size: 14px; }
+
+/* message rows on narrow screens: two lines (avatar, sender, date / subject) */
+html.layout-small #messagelist-content,
+html.layout-phone #messagelist-content { padding: 0 4px 80px; }
+html.layout-small #messagelist > tbody > tr,
+html.layout-phone #messagelist > tbody > tr { flex-wrap: wrap; row-gap: 2px; padding-top: calc(var(--tw-label) + 8px); padding-bottom: 8px; }
+html.layout-small #messagelist td.selection,
+html.layout-phone #messagelist td.selection,
+html.layout-small #messagelist span.flag,
+html.layout-phone #messagelist span.flag { display: none; }
+html.layout-small #messagelist span.fromto,
+html.layout-phone #messagelist span.fromto { flex: 1 1 0; }
+html.layout-small #messagelist span.subject,
+html.layout-phone #messagelist span.subject { order: 7; flex: 0 0 100%; padding-left: 34px; box-sizing: border-box; }
+html.layout-small #messagelist > tbody > tr[data-tw-group]::before,
+html.layout-phone #messagelist > tbody > tr[data-tw-group]::before { top: 10px; }
+
+/* "Письмо справа": narrow list, two-line rows; subject starts under the sender
+   (checkbox 16 + flag 18 + avatar 22 + three 12px gaps = 92px) */
+body.tw-preview-right #messagelist > tbody > tr { flex-wrap: wrap; row-gap: 2px; padding-top: calc(var(--tw-label) + 8px); padding-bottom: 8px; }
+body.tw-preview-right #messagelist span.fromto { flex: 1 1 0; }
+body.tw-preview-right #messagelist span.subject { order: 7; flex: 0 0 100%; padding-left: 92px; box-sizing: border-box; }
+body.tw-preview-right #messagelist > tbody > tr[data-tw-group]::before { top: 10px; }
+body.tw-preview-right .tw-listbar .tw-btn:not(.tw-icon-only) .inner { display: none; }
+body.tw-preview-right .tw-listbar .tw-btn:not(.tw-icon-only) { width: 32px; padding: 0; justify-content: center; }
+body.tw-preview-right .tw-pager .tw-page { display: none; }
+
+/* opened message on phones */
+html.layout-phone .tw-message,
+html.layout-small .tw-message { padding: 4px 16px 16px; }
+html.layout-phone .tw-msg-head { flex-wrap: wrap; }
+html.layout-phone .tw-msg-actions { flex: 0 0 100%; padding-left: 52px; }
+html.layout-small .floating-action-buttons a.button,
+html.layout-phone .floating-action-buttons a.button { background-color: var(--tw-accent); }
+
+/* ============================================================ Settings > interface: message layout cards */
+.tw-layouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 24px; max-width: 720px; }
+.tw-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 12px 10px;
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    background: var(--tw-bg);
+    color: var(--tw-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.tw-layout:hover { border-color: #dfe3ea; }
+.tw-layout[aria-checked="true"] { border-color: var(--tw-accent); background: var(--tw-selected); color: var(--tw-accent); font-weight: 600; }
+.tw-layout:focus-visible { outline: 2px solid var(--tw-accent); outline-offset: 2px; }
+.tw-layout-name { text-align: center; }
+/* little pictures: three list rows (i) and the message (b) */
+.tw-layout-pic { display: grid; gap: 4px; height: 64px; padding: 6px; border-radius: 8px; background: #fff; }
+.tw-layout-pic i, .tw-layout-pic b { display: block; border-radius: 4px; background: #eef0f4; }
+.tw-layout-pic i::before { content: ""; display: block; width: 6px; height: 6px; margin: 3px 0 0 4px; border-radius: 50%; background: #f0445b; }
+.tw-layout-pic i:nth-child(2)::before { background: #20b26c; }
+.tw-layout-pic i:nth-child(3)::before { background: #317bff; }
+.tw-layout-none { grid-template-rows: repeat(3, 1fr); }
+.tw-layout-none b { display: none; }
+.tw-layout-right { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
+.tw-layout-right i { grid-column: 1; }
+.tw-layout-right b { grid-column: 2; grid-row: 1 / 4; }
+.tw-layout-bottom { grid-template-rows: 1fr 2fr; }
+.tw-layout-bottom i:nth-child(n+2) { display: none; }
+html.layout-phone .tw-layouts { grid-template-columns: 1fr; }
+
+/* ============================================================ folder icon/colour (sidebar) */
+.tw-list li > a::before { background-color: var(--tw-ico-color, currentColor); }
+
+/* ============================================================ "Создать папку" dialog */
+.tw-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(10, 27, 57, .35);
+}
+.tw-modal {
+    position: relative;
+    width: 352px;
+    max-width: 100%;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 24px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+}
+.tw-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-text);
+    cursor: pointer;
+}
+.tw-modal-close:hover { background: var(--tw-hover); }
+.tw-folder-art { --tw-art: #4b5563; display: flex; justify-content: center; margin: 4px 0 12px; }
+.tw-folder-art .tw-art-back { fill: var(--tw-art); filter: brightness(.85); }
+.tw-folder-art .tw-art-tab { fill: #f0445b; }
+.tw-folder-art .tw-art-paper { fill: #fff; }
+.tw-folder-art .tw-art-front { fill: var(--tw-art); }
+.tw-modal-title { margin: 0 0 20px; text-align: center; font-size: 24px; font-weight: 700; line-height: 32px; color: var(--tw-text); }
+.tw-modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tw-modal .tw-field { position: relative; margin-bottom: 16px; }
+.tw-modal .tw-field > label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--tw-muted); }
+.tw-text-input,
+.tw-pick-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 44px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid var(--tw-input);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--tw-text);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    outline: 0;
+}
+.tw-text-input:focus,
+.tw-pick-btn:focus { border-color: var(--tw-accent); }
+select.tw-text-input { appearance: auto; }
+.tw-pick-btn { cursor: pointer; }
+.tw-pick-btn > span:not(.tw-pick-ico):not(.tw-pick-dot):not(.tw-pick-caret) { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-pick-caret { margin-left: auto; color: var(--tw-text); }
+.tw-pick-caret::before { width: 16px !important; height: 16px !important; }
+.tw-pick-ico {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    background-color: var(--tw-ico-color, var(--tw-text));
+    -webkit-mask: var(--ti) center / contain no-repeat;
+    mask: var(--ti) center / contain no-repeat;
+}
+.tw-pick-dot { flex: none; width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .55); }
+.tw-pick-list {
+    position: absolute;
+    z-index: 5;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 4px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(5, 12, 38, .12);
+}
+.tw-pick-list[hidden] { display: none; }
+.tw-pick-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 36px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-text);
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+.tw-pick-item:hover,
+.tw-pick-item:focus { background: var(--tw-hover); outline: 0; }
+.tw-primary-btn {
+    width: 100%;
+    height: 44px;
+    margin-top: 4px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--tw-accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.tw-primary-btn:hover { background: var(--tw-accent-hover); }
+.tw-primary-btn:disabled { background: #e8ebef; color: var(--tw-faint); cursor: default; }
+
+/* ============================================================ folder "⋮" menu (sidebar) */
+#mailboxlist li.mailbox { position: relative; }
+#mailboxlist li.mailbox > a { padding-right: 40px; }
+.tw-folder-more {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--tw-muted);
+    cursor: pointer;
+    opacity: 0;
+}
+.tw-folder-more .inner { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.tw-folder-more:hover { background: rgba(255, 255, 255, .7); color: var(--tw-text); }
+#mailboxlist li.mailbox:hover > .tw-folder-more,
+.tw-folder-more:focus-visible,
+.tw-folder-more[aria-expanded="true"] { opacity: 1; }
+/* the counter gives way to the button */
+#mailboxlist li.mailbox:hover > a .unreadcount { visibility: hidden; }
+/* touch screens have no hover */
+@media (hover: none) { .tw-folder-more { opacity: 1; } #mailboxlist li.mailbox > a .unreadcount { margin-right: 4px; } }
+.tw-menu li > a.tw-danger { color: var(--tw-red) !important; }
+
+/* ============================================================ folder rules (edit-folder dialog, Settings > Фильтры) */
+.tw-hint { margin: 0 0 12px; color: var(--tw-muted); font-size: 13px; line-height: 18px; }
+.tw-rules-list { display: flex; flex-direction: column; gap: 8px; }
+.tw-rule { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.tw-rule .tw-rule-field { flex: 0 0 96px; }
+.tw-rule .tw-rule-folder { flex: 0 0 180px; }
+.tw-rule .tw-rule-value { flex: 1 1 auto; min-width: 0; }
+.tw-rule-op { flex: none; color: var(--tw-muted); font-size: 13px; }
+.tw-rule .tw-rule-del { flex: none; width: 32px; height: 32px; border: 0 !important; background: none !important; box-shadow: none !important; color: var(--tw-muted); }
+.tw-rule .tw-rule-del:hover { color: var(--tw-red); }
+.tw-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    color: var(--tw-accent);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.tw-link-btn::before { width: 16px !important; height: 16px !important; }
+.tw-link-btn:hover { color: var(--tw-accent-hover); }
+.tw-modal:has(.tw-rules-field) { width: 440px; }
+.tw-rules-field > .tw-hint { margin-top: -4px; }
+
+/* Settings > Фильтры: the plugin page has no list column */
+#settings-menu li.filters a { --ti: url(../images/icons/filter.svg); }
+html.layout-large body.task-settings.action-plugin-tw-filters #layout > #layout-content,
+html.layout-normal body.task-settings.action-plugin-tw-filters #layout > #layout-content { grid-column: 2 / -1; }
+.tw-filters-page { padding: 24px; overflow-y: auto; }
+.tw-filters { display: flex; flex-direction: column; gap: 8px; max-width: 760px; }
+.tw-filter-row { padding: 12px; border-radius: 12px; background: #f6f7f9; }
+@media (max-width: 600px) {
+    .tw-filter-row .tw-rule { flex-wrap: wrap; }
+    .tw-filter-row .tw-rule .tw-rule-folder { flex: 1 1 100%; }
+}
+
+/* ============================================================ contacts panel (top bar "Контакты" on the mail screen) */
+.tw-contacts {
+    position: fixed;
+    top: var(--tw-top);
+    right: 16px;
+    bottom: 16px;
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: var(--tw-radius);
+    box-shadow: 0 10px 30px rgba(10, 27, 57, .15);
+}
+.tw-contacts[hidden] { display: none; }
+.tw-contacts-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px; }
+.tw-contacts-head h2 { margin: 0; font-size: 20px; font-weight: 700; line-height: 28px; color: var(--tw-text); }
+.tw-contacts-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 16px 12px; }
+.tw-contacts-tools .tw-text-input { flex: 1 1 100%; height: 40px; }
+.tw-round-btn, .tw-square-btn, .tw-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: none;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--tw-input);
+    background: #fff;
+    color: var(--tw-text) !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.tw-round-btn { width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--tw-hover); }
+.tw-square-btn { width: 40px; border-radius: 12px; }
+.tw-square-btn.tw-accent { color: var(--tw-accent) !important; }
+.tw-pill-btn { margin-left: auto; padding: 0 16px; border-radius: 12px; }
+.tw-round-btn:hover, .tw-square-btn:hover, .tw-pill-btn:hover { background: var(--tw-hover); border-color: #d7d9e2; }
+.tw-round-btn::before { width: 16px !important; height: 16px !important; }
+.tw-contacts-meta { display: flex; align-items: center; justify-content: space-between; padding: 0 16px 8px; border-bottom: 1px solid var(--tw-line); }
+.tw-contacts-count { color: var(--tw-muted); font-size: 13px; }
+.tw-contacts-meta .tw-link-btn { margin: 0; font-size: 13px; }
+.tw-contacts-list { flex: 1 1 auto; min-height: 0; margin: 0; padding: 8px; overflow-y: auto; list-style: none; }
+.tw-contacts-list > li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    outline: 0;
+}
+.tw-contacts-list > li:hover, .tw-contacts-list > li:focus-visible { background: var(--tw-hover); }
+.tw-contacts-list > li.tw-contacts-empty { justify-content: center; padding: 24px 8px; color: var(--tw-muted); cursor: default; background: none; }
+#taskmenu a.contacts.selected { background: #fff; }
+
+/* avatar + name + e-mail (contacts panel, address book list) */
+.tw-avatar.tw-avatar-lg { width: 40px; height: 40px; font-size: 16px; line-height: 40px; }
+.tw-contact-text { display: flex; flex-direction: column; min-width: 0; }
+.tw-contact-name, .tw-contact-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-contact-name { color: var(--tw-text); font-size: 14px; font-weight: 600; line-height: 20px; }
+.tw-contact-name.tw-muted { color: var(--tw-muted); font-weight: 500; }
+.tw-contact-email { color: var(--tw-muted); font-size: 13px; line-height: 18px; }
+
+/* ============================================================ address book page */
+body.task-addressbook .tw-compose-btn.disabled { opacity: .5; pointer-events: none; }
+.tw-ab-heading { list-style: none; }
+.tw-books li > a { --ti: url(../images/icons/contacts.svg); }
+.tw-books li.contactgroup > a { --ti: url(../images/icons/user.svg); }
+.tw-books li.contactsearch > a { --ti: url(../images/icons/search.svg); }
+.tw-books ul.groups { margin: 0; padding: 0 0 0 16px; list-style: none; }
+.tw-books div.treetoggle { display: none; }
+body.task-addressbook #layout-list .header { display: flex; align-items: center; gap: 8px; padding: 0 12px 0 20px; }
+body.task-addressbook #layout-list .header .header-title { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.task-addressbook #layout-list table.listing td.name { display: flex; align-items: center; gap: 12px; padding: 8px 12px; }
+body.task-addressbook #layout-list table.listing td.name::before { display: none !important; } /* Elastic's person glyph */
+body.task-addressbook #layout-list table.listing td.action { display: none; }
+body.task-addressbook #layout-list > .tw-pager {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 8px 12px;
+    border-top: 1px solid var(--tw-line);
+}
+.tw-pager-text { color: var(--tw-muted); font-size: 13px; font-weight: 500; }
+body.task-addressbook #addressbooktoolbar { justify-content: flex-end; }
+body.task-addressbook #layout-content > .header { padding: 0 16px !important; }
+html body.task-addressbook #layout-list > .header .header-title { display: block !important; }
+body.task-addressbook #layout-list .listing td { font-weight: 500; }
+body.task-addressbook .tw-compose-btn { white-space: nowrap; }
+/* long address book names: ellipsis needs a block box, the icon becomes inline */
+.tw-books li > a { display: block !important; line-height: 40px !important; }
+.tw-books li > a::before { display: inline-block !important; margin-right: 12px; vertical-align: -4px; }
+html body.task-addressbook #layout-list > .header .header-title { text-align: left; margin: 0; }
+body.task-addressbook #layout-list > .searchbar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin: 12px 12px 4px;
+    border: 1px solid var(--tw-input);
+    border-radius: 12px;
+    background: #fff;
+}
+body.task-addressbook #layout-list > .searchbar input { background: none; border: 0; box-shadow: none; }
+
+/* contact card (content frame) */
+body.task-addressbook.formcontainer, body.task-addressbook.formcontainer .formcontent { background: #fff; }
+body.task-addressbook .formcontent { padding: 24px; box-sizing: border-box; }
+body.task-addressbook .contact-header { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
+body.task-addressbook .contact-header .contact-photo { flex: none; width: 72px !important; height: 72px; margin: 0; padding: 0; border: 0; border-radius: 50%; overflow: hidden; background: var(--tw-hover); }
+body.task-addressbook .contact-header .contact-photo img { width: 72px; height: 72px; object-fit: cover; }
+body.task-addressbook .contact-head { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; }
+body.task-addressbook .contact-head .names,
+body.task-addressbook .contact-head .namefield:not(.source) { color: var(--tw-text); font-size: 20px; font-weight: 700; line-height: 28px; }
+body.task-addressbook .contact-head .source,
+body.task-addressbook .contact-head .source .namefield { color: var(--tw-muted); font-size: 13px; font-weight: 500; }
+body.task-addressbook .nav-tabs { gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--tw-line); }
+body.task-addressbook .nav-tabs .nav-link {
+    margin-bottom: -1px;
+    padding: 8px 12px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: none;
+    color: var(--tw-muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+body.task-addressbook .nav-tabs .nav-link.active { border-bottom-color: var(--tw-accent); color: var(--tw-text); }
+body.task-addressbook fieldset.contactfieldgroup { margin: 0 0 16px; padding: 16px; border: 0; border-radius: 12px; background: #f6f7f9; }
+body.task-addressbook fieldset.contactfieldgroup > legend {
+    float: none;
+    width: auto;
+    margin: 0 0 8px;
+    padding: 0;
+    border: 0;
+    color: var(--tw-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+body.task-addressbook .readonly fieldset.contactfieldgroup .row { align-items: center; margin: 0; min-height: 28px; }
+body.task-addressbook .readonly .input-group-pre,
+body.task-addressbook .readonly .contactfieldlabel { color: var(--tw-muted); font-size: 13px; }
+body.task-addressbook .readonly .contactfieldcontent { color: var(--tw-text); font-size: 14px; font-weight: 500; }
+body.task-addressbook .contact-header .contact-photo #contactpic { width: 72px; height: 72px; padding: 0; }
+body.task-addressbook fieldset.contactfieldgroup > legend { float: left; width: 100%; }
+body.task-addressbook fieldset.contactfieldgroup > legend + * { clear: both; }
+
+/* contact edit / new contact form */
+body.task-addressbook .contact-head .row.form-group { display: flex; align-items: center; margin: 0 0 8px; }
+body.task-addressbook .contact-head .row.form-group > label {
+    flex: 0 0 120px;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    color: var(--tw-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+body.task-addressbook .contact-head .row.form-group > div { flex: 1 1 auto; max-width: 420px; padding: 0; }
+body.task-addressbook .contact-head .source.row.form-group > div { color: var(--tw-text); font-size: 14px; font-weight: 500; }
+body.task-addressbook .formcontent .form-control,
+body.task-addressbook .formcontent .custom-select {
+    height: 40px;
+    border: 1px solid var(--tw-input);
+    border-radius: 10px !important;
+    background-color: #fff;
+    color: var(--tw-text);
+    font-size: 14px;
+    box-shadow: none;
+}
+body.task-addressbook .formcontent textarea.form-control { height: auto; }
+body.task-addressbook .formcontent .form-control:focus,
+body.task-addressbook .formcontent .custom-select:focus { border-color: var(--tw-accent); }
+body.task-addressbook .formcontent select.addfieldmenu { width: auto; min-width: 180px; margin-top: 4px; color: var(--tw-accent); font-weight: 600; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group { flex-wrap: nowrap; gap: 8px; margin: 0 0 8px; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select { flex: 0 0 120px; max-width: 120px; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .form-control { flex: 1 1 auto; min-width: 0; }
+body.task-addressbook .contactfieldbutton.deletebutton {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0 !important;
+    background: none !important;
+    color: var(--tw-muted);
+}
+body.task-addressbook .contactfieldbutton.deletebutton:hover { color: var(--tw-red); }
+body.task-addressbook .formbuttons { padding: 0 24px 24px; border: 0; background: #fff; }
+body.task-addressbook .formbuttons .btn-primary {
+    height: 44px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--tw-accent);
+    font-size: 14px;
+    font-weight: 600;
+}
+body.task-addressbook .formbuttons .btn-primary::before { display: none; } /* Elastic's check glyph */
+body.task-addressbook .formbuttons .btn-primary:hover { background: var(--tw-accent-hover); }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select { flex: 0 0 120px !important; width: 120px !important; }
+/* address: a block of several inputs instead of one */
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .content > * { flex: 1 1 100%; margin: 0 !important; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .content .form-control { border-radius: 10px !important; }
+html body.task-addressbook .formbuttons .btn-primary::before { content: none !important; display: none !important; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group { align-items: flex-start; }
+
+/* ============================================================ contacts page, Timeweb layout:
+   sidebar | table | card panel (only while a contact or a form is open) */
+html.layout-large body.task-addressbook #layout,
+html.layout-normal body.task-addressbook #layout { grid-template-columns: var(--tw-aside) minmax(0, 1fr); }
+html.layout-large body.task-addressbook.tw-ab-open #layout,
+html.layout-normal body.task-addressbook.tw-ab-open #layout { grid-template-columns: var(--tw-aside) minmax(0, 1fr) 340px; }
+html.layout-large body.task-addressbook #layout > #layout-list,
+html.layout-normal body.task-addressbook #layout > #layout-list { grid-column: 2; margin-right: 16px; border-right: 0; border-radius: var(--tw-radius); }
+html.layout-large body.task-addressbook #layout > #layout-content,
+html.layout-normal body.task-addressbook #layout > #layout-content { display: none !important; }
+html.layout-large body.task-addressbook.tw-ab-open #layout > #layout-content,
+html.layout-normal body.task-addressbook.tw-ab-open #layout > #layout-content { display: flex !important; grid-column: 3; border-radius: var(--tw-radius); }
+
+/* sidebar */
+#directorylist > li > a { display: flex !important; line-height: normal !important; }
+#directorylist > li > a .tw-book-count {
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--tw-text);
+    font-size: 12px;
+    font-weight: 600;
+}
+#directorylist > li.selected > a .tw-book-count { background: var(--tw-hover); }
+#directorylist > li:first-child > a { --ti: url(../images/icons/user.svg); }
+#directorylist ul.groups { display: none !important; } /* shown flat under the labels heading */
+#tw-labels li > a { --ti: url(../images/icons/tag.svg); }
+.tw-ab-heading .tw-ab-heading-btns { display: inline-flex; gap: 2px; }
+
+/* table header */
+body.task-addressbook #layout-list > .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    height: auto !important;
+    min-height: 72px;
+    padding: 16px 24px !important;
+    border-bottom: 0 !important;
+}
+.tw-ab-title { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+html body.task-addressbook #layout-list > .header .tw-ab-title .header-title { display: block !important; font-size: 20px !important; font-weight: 700; }
+.tw-ab-count { padding: 2px 8px; border-radius: 8px; background: var(--tw-hover); color: var(--tw-muted); font-size: 14px; font-weight: 600; }
+.tw-ab-count[hidden] { display: none; }
+body.task-addressbook #layout-list > .header > .searchbar {
+    flex: 1 1 240px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin: 0;
+    border: 0;
+    border-radius: 12px;
+    background: var(--tw-hover);
+}
+body.task-addressbook #layout-list > .header > .searchbar input { background: none; border: 0; box-shadow: none; }
+#tw-ab-sort { flex: 0 0 200px; width: 200px; height: 40px; font-weight: 600; }
+.tw-split-btn { display: inline-flex; flex: none; height: 40px; border: 1px solid var(--tw-input); border-radius: 12px; overflow: hidden; }
+.tw-split-btn > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    color: var(--tw-accent) !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.tw-split-btn > a:hover { background: var(--tw-hover); }
+.tw-split-btn > a.disabled { opacity: .5; pointer-events: none; }
+.tw-split-btn > .tw-add-more { padding: 0 10px; border-left: 1px solid var(--tw-input); }
+.tw-split-btn > .tw-add-more .inner { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* columns: checkbox | name | e-mail | phone */
+body.task-addressbook { --tw-ab-grid: 28px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, .8fr); }
+.tw-ab-cols {
+    display: grid;
+    grid-template-columns: var(--tw-ab-grid);
+    align-items: center;
+    gap: 12px;
+    padding: 8px 36px;
+    border-bottom: 1px solid var(--tw-line);
+    color: var(--tw-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+.tw-ab-check { display: flex; align-items: center; }
+body.task-addressbook #layout-list table.listing { display: block; padding: 4px 24px; border-spacing: 0; }
+body.task-addressbook #layout-list table.listing > tbody { display: block; }
+body.task-addressbook #layout-list table.listing tr {
+    display: grid;
+    grid-template-columns: var(--tw-ab-grid);
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 0 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+body.task-addressbook #layout-list table.listing tr td { display: flex; align-items: center; padding: 0 !important; border: 0; background: none !important; }
+body.task-addressbook #layout-list table.listing tr:hover { background: var(--tw-hover); }
+body.task-addressbook #layout-list table.listing tr.selected { background: var(--tw-selected); }
+body.task-addressbook #layout-list table.listing td.name { display: contents !important; }
+body.task-addressbook #layout-list table.listing td.name::before { display: none !important; }
+.tw-c-name, .tw-c-email, .tw-c-phone { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.tw-c-name { display: flex; align-items: center; gap: 12px; }
+.tw-c-name .tw-contact-name { overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.tw-c-email { color: var(--tw-text); }
+.tw-c-phone.tw-muted { color: var(--tw-muted); }
+.tw-avatar.tw-avatar-md { width: 32px; height: 32px; font-size: 13px; line-height: 32px; }
+body.task-addressbook #layout-list table.listing tr.group .tw-c-email,
+body.task-addressbook #layout-list table.listing tr.group .tw-c-phone { visibility: hidden; }
+
+/* right panel */
+body.task-addressbook #layout-content > .header { border-bottom: 0 !important; }
+body.task-addressbook #layout-content > .header .header-title { font-size: 16px !important; }
+body.task-addressbook #addressbooktoolbar { flex: none !important; gap: 4px; }
+.tw-ab-close .inner { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* card and form in the narrow panel: labels above fields */
+body.task-addressbook .formcontent { padding: 8px 16px 16px; }
+body.task-addressbook .contact-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+body.task-addressbook .contact-head .row.form-group { flex-direction: column; align-items: stretch; gap: 6px; margin-bottom: 12px; }
+body.task-addressbook .contact-head .row.form-group > label { flex: none; }
+body.task-addressbook .contact-head .row.form-group > div { max-width: none; }
+body.task-addressbook fieldset.contactfieldgroup { padding: 12px; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select { flex-basis: 96px !important; width: 96px !important; }
+body.task-addressbook .formbuttons { position: sticky; bottom: 0; padding: 12px 16px 16px; }
+body.task-addressbook .formbuttons .btn-primary { width: 100%; }
+
+/* narrow screens: Elastic switches the panes, the table becomes a list */
+html.layout-small body.task-addressbook .tw-ab-cols,
+html.layout-phone body.task-addressbook .tw-ab-cols { display: none; }
+html.layout-small body.task-addressbook #layout-list table.listing tr,
+html.layout-phone body.task-addressbook #layout-list table.listing tr { grid-template-columns: 28px minmax(0, 1fr); }
+html.layout-small body.task-addressbook .tw-c-email,
+html.layout-phone body.task-addressbook .tw-c-email { grid-column: 2; margin-top: -14px; padding-left: 44px; color: var(--tw-muted); font-size: 13px; }
+html.layout-small body.task-addressbook .tw-c-phone,
+html.layout-phone body.task-addressbook .tw-c-phone { display: none; }
+html.layout-phone #tw-ab-sort { flex: 1 1 100%; width: auto; }
+/* own dropdowns open above the contacts panel (1500); modals (2000) stay on top */
+.tw-menu { z-index: 1600; }
+.tw-ab-count { line-height: 20px; align-self: center; }
+#directorylist > li > a .tw-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.task-addressbook #layout-content > .header { justify-content: flex-end; }
+body.task-addressbook #layout-content > .header .header-title { flex: 1 1 auto; }
+body.task-addressbook .nav-tabs { flex-wrap: nowrap; gap: 0; }
+body.task-addressbook .nav-tabs .nav-link { padding: 8px; font-size: 13px; white-space: nowrap; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select { flex-basis: 80px !important; width: 80px !important; padding-right: 20px; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group { gap: 6px; }
+body.task-addressbook .contactfieldbutton.deletebutton { width: 28px; }
+body.task-addressbook .contact-photo, body.task-addressbook .contact-photo #contactpic { width: 72px !important; height: 72px !important; min-height: 0; }
+body.task-addressbook .contact-photo img { width: 72px !important; height: 72px !important; object-fit: cover; }
+
+/* contact panel (340px): everything fits */
+/* round photo: Elastic gives the photo box 112px width and its own height */
+body.task-addressbook .contact-header .contact-photo,
+body.task-addressbook .contact-header .contact-photo #contactpic {
+    flex: none !important;
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    max-width: 72px !important;
+    aspect-ratio: 1;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    overflow: hidden;
+}
+/* tabs share the width, labels stay whole */
+body.task-addressbook .nav-tabs { display: flex; flex-wrap: nowrap; }
+body.task-addressbook .nav-tabs .nav-item { flex: 1 1 0; min-width: 0; }
+body.task-addressbook .nav-tabs .nav-link { display: block; padding: 8px 2px; font-size: 13px; text-align: center; white-space: nowrap; overflow: visible; }
+/* field rows: value on its own full-width line, type select and delete under it */
+body.task-addressbook fieldset.contactfieldgroup .row.input-group { flex-wrap: wrap !important; gap: 6px; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .form-control,
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .content { order: 1; flex: 1 1 100% !important; width: 100% !important; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select { order: 2; flex: 1 1 auto !important; width: auto !important; max-width: none; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > .input-group-append { order: 3; flex: none; }
+/* group labels and the head labels never clip */
+body.task-addressbook fieldset.contactfieldgroup > legend,
+body.task-addressbook .contact-head .row.form-group > label { white-space: normal; overflow: visible; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > select.form-control { order: 2; flex: 1 1 0 !important; width: auto !important; min-width: 0; }
+body.task-addressbook fieldset.contactfieldgroup .row.input-group > div.content { order: 1; }
+
+/* contacts page: search icon inside the pill */
+body.task-addressbook #layout-list > .header > .searchbar { padding: 0 8px 0 14px; }
+body.task-addressbook #layout-list > .header > .searchbar form { gap: 8px; }
+#directorylist > li > a::before { margin-right: 0 !important; } /* the flex gap already spaces it */
+
+/* contacts panel: "add to contacts" for people known only from the mail, shown on hover */
+.tw-contacts-list > li .tw-contact-add { margin-left: auto; flex: none; opacity: 0; }
+.tw-contacts-list > li:hover .tw-contact-add, .tw-contacts-list > li .tw-contact-add:focus-visible { opacity: 1; }
+html.layout-small .tw-contacts-list > li .tw-contact-add, html.layout-phone .tw-contacts-list > li .tw-contact-add { opacity: 1; }
+#directorylist > li > a[rel="twmail"] { --ti: url(../images/icons/mail.svg); }
+/* contacts table: the row checkbox sat flush against a clipping cell edge */
+body.task-addressbook #layout-list table.listing td.selection { overflow: visible; justify-content: center; }
+.tw-ab-check { justify-content: center; }
