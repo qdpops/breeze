@@ -1,0 +1,12 @@
+{
+    "name": "qdpops/breeze",
+    "description": "Breeze: a light, modern skin for Roundcube 1.6 (date groups, attachment chips, floating compose, phone layout)",
+    "type": "roundcube-skin",
+    "license": "GPL-3.0-or-later",
+    "keywords": ["roundcube", "skin", "theme", "webmail"],
+    "homepage": "https://github.com/qdpops/roundcube-skin-breeze",
+    "require": {
+        "roundcube/plugin-installer": ">=0.3.0",
+        "qdpops/tw-folders": "^1.0"
+    }
+}
